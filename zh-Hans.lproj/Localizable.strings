@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  YSJSwiftLibrary
+
+  Created by ysj on 2016/12/27.
+  Copyright © 2016年 ysj. All rights reserved.
+*/
+
+"camera" = "相机";
+"cameraFilm" = "相机胶卷";
+"nextStep" = "下一步";
+"photoLibraryForbiddenWarningMsg" = "获得照片权限被关闭，请在 设置-隐私-相册 中开启";
+"cameraRoll" = "相机胶卷";
+"selectAtLeastOne" = "请至少选则一个";
+"selectNineIsTheMost" = "最多可以选择9个";
+"complete" = "完成";
+"publishState" = "发动态";
+"cancel" = "取消";

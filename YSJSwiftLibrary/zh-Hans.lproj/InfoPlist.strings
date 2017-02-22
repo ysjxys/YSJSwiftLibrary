@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  YSJSwiftLibrary
+
+  Created by ysj on 2016/12/27.
+  Copyright © 2016年 ysj. All rights reserved.
+*/
+CFBundleDisplayName = "YSJ的类库";
+
+
