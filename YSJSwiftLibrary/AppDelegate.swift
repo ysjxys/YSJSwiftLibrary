@@ -27,14 +27,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //tabbar按钮文字
         nav.title = "第一1页"
         //导航栏按钮颜色
-        nav.navigationBar.tintColor = ipColorFromHex(IPHexColorNextBtn)
+        nav.navigationBar.tintColor = UIColor.purple
         //导航栏背景色
         nav.navigationBar.barTintColor = UIColor.white
         //导航栏文字颜色
-        nav.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ipColorFromHex(IPHexColorNavigationTitle)]
+        nav.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+        
+        
+        let nav2 = UINavigationController(rootViewController: SecondViewController())
+        nav2.tabBarItem = UITabBarItem(title: "第二页", image: nil, selectedImage: nil)
+        
         
         let tabBar = YSJTabBarController()
-        tabBar.viewControllers = [nav]
+        tabBar.viewControllers = [nav,nav2]
         
         window?.rootViewController = tabBar
         

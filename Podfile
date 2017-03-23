@@ -1,7 +1,12 @@
-#source 'https://github.com/CocoaPods/Specs.git'
+source 'https://git.oschina.net/yushengjie/ysj.git'
+source 'https://github.com/CocoaPods/Specs.git'
+source 'git@112.124.41.46:yougoods-ios/xgn.git'
 platform :ios, '8.1'
 target 'YSJSwiftLibrary' do
     use_frameworks!
+#pod 'ImagePicker'
+pod 'MediaPicker', '~> 1.0.9'
+pod 'KVStore'
 pod 'MBProgressHUD', '~> 1.0.0'
 pod 'AFNetworking', '~> 3.1'
 pod 'Reachability', '~> 3.1.1'
@@ -12,5 +17,7 @@ pod 'FSCalendar', '~> 2.6'
 pod 'ViewDeck', '~> 2.4'
 pod 'UMengSocialCOM', '~> 5.2.1'
 pod 'SAMKeychain', '~> 1.5'
-pod 'CryptoSwift', '0.6.7'
+pod 'CryptoSwift', '~> 0.6.7'
+pod 'FDFullscreenPopGesture', '~> 1.1'
+pod 'SnapKit', '~> 3.2.0'
 end

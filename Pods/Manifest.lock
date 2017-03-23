@@ -15,46 +15,62 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - CryptoSwift (0.6.7)
+  - FDFullscreenPopGesture (1.1)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - FSCalendar (2.7.1)
+  - FSCalendar (2.7.2)
+  - KVStore (1.0.0):
+    - CryptoSwift
+    - FMDB
+    - SAMKeychain
   - MBProgressHUD (1.0.0)
+  - MediaPicker (1.0.9):
+    - MBProgressHUD
   - MJRefresh (3.1.12)
   - Reachability (3.1.1)
   - SAMKeychain (1.5.2)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - SnapKit (3.2.0)
   - UMengSocialCOM (5.2.1)
   - ViewDeck (2.4.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1)
-  - CryptoSwift (= 0.6.7)
+  - CryptoSwift (~> 0.6.7)
+  - FDFullscreenPopGesture (~> 1.1)
   - FMDB (~> 2.6)
   - FSCalendar (~> 2.6)
+  - KVStore
   - MBProgressHUD (~> 1.0.0)
+  - MediaPicker (~> 1.0.9)
   - MJRefresh (~> 3.1)
   - Reachability (~> 3.1.1)
   - SAMKeychain (~> 1.5)
   - SDWebImage (~> 3.8)
+  - SnapKit (~> 3.2.0)
   - UMengSocialCOM (~> 5.2.1)
   - ViewDeck (~> 2.4)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   CryptoSwift: 685ae257941e5447474348a2b545583e1a16b573
+  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  FSCalendar: cfc95384cb0d648ad7c1957649ea74d6c26bb0de
+  FSCalendar: 6200ef796dfe85005ff2fb19bbd429f8be742f86
+  KVStore: 0e547fb5da38100e6f7c080fcebcc87b9940085a
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MediaPicker: 3cc32d91d2988cdb69cbe986a9f0d1b00b3d65f6
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   SAMKeychain: 1865333198217411f35327e8da61b43de79b635b
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   UMengSocialCOM: 074c135ce349aa4c8848d3fb8458757bcb6ffb67
   ViewDeck: 0b7b83bc2782a20dfb76207d0a2e8c5e6a6d182d
 
-PODFILE CHECKSUM: 07fa274f2c3e0ae17acb46f0325349527127aeba
+PODFILE CHECKSUM: b910bb99ee8b041a81a60acac71975a2c66375cb
 
 COCOAPODS: 1.1.1
