@@ -292,7 +292,19 @@ class ViewController: YSJViewController{
     }
     
     func shareImageBtnClick() {
-        let imagePickerVC = ImagePickerViewController()
+        let imagePickerVC = ImagePickerViewController(chooseHeadImageClosure: nil, chooseImagesClosure: { (phassetArray) in
+            for asset in phassetArray! {
+                let option = PHImageRequestOptions()
+                option.isSynchronous = true
+                option.resizeMode = .fast
+                PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 500, height: 500), contentMode: .default, options: option, resultHandler: { (image, info) in
+                    print("image:\(image)")
+                    self.imageView.image = image
+                })
+            }
+        }) { 
+            print("fail")
+        }
         //shareImageType  照片选择模式进入
         imagePickerVC.themeColor = UIColor.purple
         imagePickerVC.selectBackgroundColor = UIColor.green
@@ -303,16 +315,6 @@ class ViewController: YSJViewController{
         imagePickerVC.detailType = .imageVideoType
         imagePickerVC.chooseType = .shareImageType
         imagePickerVC.isNewPhotoFront = true
-        imagePickerVC.chooseImagesClosure = {(isSuccess, assetArray) in
-            for asset in assetArray! {
-                let option = PHImageRequestOptions()
-                option.isSynchronous = true
-                option.resizeMode = .fast
-                PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 500, height: 500), contentMode: .default, options: option, resultHandler: { (image, info) in
-                    print("image:\(image)")
-                })
-            }
-        }
         
         //        imagePickerVC.isShowByPresent = true
         //        let nav = UINavigationController(rootViewController: imagePickerVC)
@@ -326,18 +328,18 @@ class ViewController: YSJViewController{
     
     func headImageBtnClick() {
         //headImageType   头像选择模式进入
-        let imagePickerVC = ImagePickerViewController()
+        let imagePickerVC = ImagePickerViewController(chooseHeadImageClosure: { (headImage) in
+            print("width:\(headImage?.size.width)  height:\(headImage?.size.height)")
+            self.imageView.image = headImage
+        }, chooseImagesClosure: nil) { 
+            print("fail")
+        }
         //default is false
         imagePickerVC.isNewPhotoFront = false
         //default is .shareImageType
         imagePickerVC.chooseType = .headImageType
         imagePickerVC.selectImage = UIImage(named: "video_icon")
         
-        //返回headImage的闭包处理部分
-        imagePickerVC.chooseHeadImageClosure = {(isSuccess, headImage) in
-            print("width:\(headImage?.size.width)  height:\(headImage?.size.height)")
-            self.imageView.image = headImage
-        }
         
         imagePickerVC.isShowByPresent = true
         let nav = UINavigationController(rootViewController: imagePickerVC)

@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '66CF9ED506D2BF891901424D859755D2'
+               BlueprintIdentifier = '1086398C304AEEE6366E5333567BEE4F'
                BlueprintName = 'MediaPicker'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'MediaPicker.framework'>

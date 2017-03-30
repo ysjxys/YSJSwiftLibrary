@@ -28,7 +28,7 @@ class EditHeadImageViewController: UIViewController, UIScrollViewDelegate {
     var updateSelectArray: [ImageCellModel] = []
     var isComingFromDetail = false
     //头像选择模式回调
-    var chooseHeadImageClosure: ( (Bool, UIImage?) -> () )?
+    var chooseHeadImageClosure: ( (UIImage?) -> () )?
     var isShowByPresent = true
     var shouldPopVC: UIViewController?
     var isComingVCTabBarShow = true
@@ -358,7 +358,7 @@ class EditHeadImageViewController: UIViewController, UIScrollViewDelegate {
                     _ = navigationController?.popToRootViewController(animated: true)
                 }
             }
-            closure(true, newImage!)
+            closure(newImage!)
         }
     }
     

@@ -1,5 +1,5 @@
 //
-//  SJTransitionAnimator.swift
+//  TransitionAnimator.swift
 //  YSJSwiftLibrary
 //
 //  Created by ysj on 2017/3/21.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-internal class SJTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+internal class TransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     var toVC: UIViewController!
     var fromVC: UIViewController!
@@ -33,6 +33,6 @@ internal class SJTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
     }
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.3
+        return direction == .in ? inDuration : outDuration
     }
 }

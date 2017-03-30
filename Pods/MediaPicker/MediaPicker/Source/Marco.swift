@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MBProgressHUD
 
 
 let ImageCollectionCellViewIdentifier = "ImageCollectionCellViewIdentifier"
@@ -105,23 +104,46 @@ public func ipColorFromHex(hex: String, alpha: CGFloat) -> UIColor {
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(alpha))
 }
 
-public func showHudWith(targetView: UIView, title: String, completeClosure:  ( () -> () )? ) {
-    DispatchQueue.main.sync {
-        let hud = MBProgressHUD(view: targetView)
-        hud.label.text = title
-        hud.label.numberOfLines = 0
-        hud.mode = .text
-        targetView.addSubview(hud)
-        hud.show(animated: true, whileExecuting: {
-            sleep(UInt32(2))
-        }) {
-            hud.removeFromSuperview()
-            if completeClosure != nil{
-                completeClosure!()
-            }
+public func showHud(targetView: UIView, title: String, completeClosure:( () -> () )? ){
+    DispatchQueue.main.async {
+        let label = UILabel()
+        label.text = title
+        label.backgroundColor = UIColor.white
+        label.textColor = UIColor.lightGray
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        
+        let cornerRadiusBackView = UIView()
+        cornerRadiusBackView.backgroundColor = UIColor.clear
+        cornerRadiusBackView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        cornerRadiusBackView.layer.shadowOpacity = 0.7
+        cornerRadiusBackView.layer.shadowRadius = 5
+        cornerRadiusBackView.layer.shadowColor = UIColor.lightGray.cgColor
+        let size = title.boundingRect(with: CGSize(width: 240, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: label.font], context: nil).size
+        cornerRadiusBackView.frame = CGRect(x: 0, y: 0, width: size.width+60, height: size.height+30)
+        cornerRadiusBackView.center = targetView.center
+        targetView.addSubview(cornerRadiusBackView)
+        
+        
+        label.frame = CGRect(x: 0, y: 0, width: cornerRadiusBackView.frame.width, height: cornerRadiusBackView.frame.height)
+        cornerRadiusBackView.addSubview(label)
+        
+        UIView.animate(withDuration: 2, animations: {
+            label.alpha = 0.99
+        }) { (isFinish1) in
+            UIView.animate(withDuration: 0.5, animations: {
+                label.alpha = 0
+            }, completion: { (isFinish2) in
+                cornerRadiusBackView.removeFromSuperview()
+                if completeClosure != nil{
+                    completeClosure!()
+                }
+            })
         }
     }
 }
-
 
 

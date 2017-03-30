@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import Photos
-import MBProgressHUD
 
 public let updateArrayCollectionVCNotificationName = Notification.Name("updateArrayCollectionVCNotificationName")
 public let updateArrayCollectionVCUserInfoKey = "updateArrayCollectionVCUserInfoKey"
@@ -75,7 +74,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     //图片选择按钮背景色
     public var selectBackgroundColor = ipColorFromHex(IPHexColorNextBtn)
     //图片选择按钮文字颜色
-    public var selectNumTextColor = ipColorFromHex(IPHexColorNextBtn)
+    public var selectNumTextColor = ipColorFromHex(IPHexColorSelectNumLabelText)
     //拍照按钮图片
     public var cameraBtnImage: UIImage?
     //选择是否新的照片在前
@@ -91,9 +90,12 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     //是否在shareImage模式下启用勾选图片
     public var isUseSelectImageInShareImageType = false
     //头像选择模式回调
-    public var chooseHeadImageClosure: ( (Bool, UIImage?) -> () )?
+    public var chooseHeadImageClosure: ( (UIImage?) -> () )?
     //分享模式回调
-    public var chooseImagesClosure: ( (Bool, [PHAsset]? ) -> () )?
+    public var chooseImagesClosure: ( ([PHAsset]?) -> () )?
+    //失败回调
+    public var failClosure: ( () -> () )?
+    
     //展示模式，默认为present式
     public var isShowByPresent = true
     //进入MediaPlayer的页面的tabBar是否显示
@@ -107,17 +109,23 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
         return false
     }
     
+    // MARK: - init Method
+    public init(chooseHeadImageClosure: ( (UIImage?) -> () )?, chooseImagesClosure: ( ([PHAsset]?) -> () )?, failClosure: ( () -> () )?) {
+        super.init(nibName: nil, bundle: nil)
+        self.chooseImagesClosure = chooseImagesClosure
+        self.chooseHeadImageClosure = chooseHeadImageClosure
+        self.failClosure = failClosure
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - LifeCircle Method
     public override func viewDidLoad() {
         super.viewDidLoad()
         
         initView()
-        
-        let hud = MBProgressHUD(view: view)
-        hud.mode = .indeterminate
-        view.addSubview(hud)
-        hud.show(animated: true)
-        
         initConstraint()
         initNotification()
         
@@ -130,24 +138,12 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
                 weakSelf!.initData()
                 DispatchQueue.main.async {
                     weakSelf!.collectionView.reloadData()
-                    hud.hide(animated: true)
                 }
             }else{
                 weakSelf!.isGetMediaSuccess = false
-                DispatchQueue.main.sync {
-                    hud.hide(animated: true)
-                }
-                showHudWith(targetView: weakSelf!.view, title: IPStringPhotoLibraryForbiddenWarningMsg, completeClosure: {
-                    weakSelf!.backBarBtnClick()
-                    switch weakSelf!.chooseType {
-                    case .shareImageType:
-                        if let closure = weakSelf!.chooseImagesClosure {
-                            closure(weakSelf!.isGetMediaSuccess, nil)
-                        }
-                    case .headImageType:
-                        if let closure = weakSelf!.chooseHeadImageClosure {
-                            closure(weakSelf!.isGetMediaSuccess, nil)
-                        }
+                showHud(targetView: weakSelf!.view, title: IPStringPhotoLibraryForbiddenWarningMsg, completeClosure: {
+                    if let failClosure = self.failClosure {
+                        failClosure()
                     }
                 })
             }
@@ -374,7 +370,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     
     func rightBtnClick() {
         if updateSelectArray.count == 0 {
-            showHudWith(targetView: view, title: IPStringSelectAtLeastOne, completeClosure: nil)
+            showHud(targetView: view, title: IPStringSelectAtLeastOne, completeClosure: nil)
             return
         }
         switch chooseType {
@@ -410,7 +406,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
                     phAssetArray.append(updateSelectArray[index].phAsset!)
                 }
                 backBarBtnClick()
-                closure(isGetMediaSuccess, phAssetArray)
+                closure(phAssetArray)
             }
         }
     }
@@ -450,7 +446,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
             
             // >maxChooseNum 且还想继续选择更多  返回
             if updateSelectArray.count >= maxNum && cell.cellModel.isSelected == false{
-                showHudWith(targetView: view, title: IPStringSelectTheMost, completeClosure: nil)
+                showHud(targetView: view, title: IPStringSelectTheMost, completeClosure: nil)
                 return
             }
             changeCellSelectState(cell: cell)
@@ -480,7 +476,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
             let image = info[UIImagePickerControllerEditedImage] as! UIImage
             if let closuer = self.chooseHeadImageClosure {
                 backBarBtnClick()
-                closuer(isGetMediaSuccess, image)
+                closuer(image)
             }
         case .shareImageType:
             self.dismiss(animated: true, completion: nil)
@@ -507,9 +503,11 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
                 if let closure = self.chooseImagesClosure {
                     self.backBarBtnClick()
                     if let lastImageAsset = lastImageAsset {
-                        closure(self.isGetMediaSuccess, [lastImageAsset])
-                    }else {
-                        closure(self.isGetMediaSuccess, nil)
+                        closure([lastImageAsset])
+                        return
+                    }
+                    if let failClosure = self.failClosure{
+                        failClosure()
                     }
                 }
             })

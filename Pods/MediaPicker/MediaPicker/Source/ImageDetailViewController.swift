@@ -58,9 +58,9 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
     //单个选中图片
     var selectImage: UIImage?
     //头像选择模式回调
-    var chooseHeadImageClosure: ( (Bool, UIImage?) -> () )?
+    var chooseHeadImageClosure: ( (UIImage?) -> () )?
     //分享模式回调
-    var chooseImagesClosure: ( (Bool, [PHAsset]? ) -> () )?
+    var chooseImagesClosure: ( ([PHAsset]? ) -> () )?
     //是否present展示
     var isShowByPresent = true
     //imageReuestOptions
@@ -809,7 +809,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
             }
         case .shareImageType:
             if updateSelectArray.count >= maxChooseNum && detailArray[currentIndex].isSelected == false{
-                showHudWith(targetView: view, title: IPStringSelectTheMost, completeClosure: nil)
+                showHud(targetView: view, title: IPStringSelectTheMost, completeClosure: nil)
                 return
             }
             detailArray[currentIndex].isSelected = !detailArray[currentIndex].isSelected
@@ -894,7 +894,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
                         _ = navigationController?.popToRootViewController(animated: true)
                     }
                 }
-                closure(true, phAssetArray)
+                closure(phAssetArray)
             }
         }
     }

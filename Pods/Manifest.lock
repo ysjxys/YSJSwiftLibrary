@@ -25,8 +25,7 @@ PODS:
     - FMDB
     - SAMKeychain
   - MBProgressHUD (1.0.0)
-  - MediaPicker (1.0.9):
-    - MBProgressHUD
+  - MediaPicker (1.1.4.5)
   - MJRefresh (3.1.12)
   - Reachability (3.1.1)
   - SAMKeychain (1.5.2)
@@ -45,7 +44,7 @@ DEPENDENCIES:
   - FSCalendar (~> 2.6)
   - KVStore
   - MBProgressHUD (~> 1.0.0)
-  - MediaPicker (~> 1.0.9)
+  - MediaPicker (~> 1.1.4.5)
   - MJRefresh (~> 3.1)
   - Reachability (~> 3.1.1)
   - SAMKeychain (~> 1.5)
@@ -62,7 +61,7 @@ SPEC CHECKSUMS:
   FSCalendar: 6200ef796dfe85005ff2fb19bbd429f8be742f86
   KVStore: 0e547fb5da38100e6f7c080fcebcc87b9940085a
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  MediaPicker: 3cc32d91d2988cdb69cbe986a9f0d1b00b3d65f6
+  MediaPicker: c7c13a884f450b0a24e74f302b24b4ec7ee94dcd
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   SAMKeychain: 1865333198217411f35327e8da61b43de79b635b
@@ -71,6 +70,6 @@ SPEC CHECKSUMS:
   UMengSocialCOM: 074c135ce349aa4c8848d3fb8458757bcb6ffb67
   ViewDeck: 0b7b83bc2782a20dfb76207d0a2e8c5e6a6d182d
 
-PODFILE CHECKSUM: b910bb99ee8b041a81a60acac71975a2c66375cb
+PODFILE CHECKSUM: 033b08f0d19999f393cde4134bccb8582f7b3a06
 
 COCOAPODS: 1.1.1

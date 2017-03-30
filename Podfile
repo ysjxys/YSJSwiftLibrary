@@ -5,7 +5,7 @@ platform :ios, '8.1'
 target 'YSJSwiftLibrary' do
     use_frameworks!
 #pod 'ImagePicker'
-pod 'MediaPicker', '~> 1.0.9'
+pod 'MediaPicker', '~> 1.1.4.5'
 pod 'KVStore'
 pod 'MBProgressHUD', '~> 1.0.0'
 pod 'AFNetworking', '~> 3.1'

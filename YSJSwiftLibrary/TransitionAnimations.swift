@@ -1,5 +1,5 @@
 //
-//  SJTransitionAnimations.swift
+//  TransitionAnimations.swift
 //  YSJSwiftLibrary
 //
 //  Created by ysj on 2017/3/21.
@@ -11,7 +11,7 @@ import UIKit
 
 
 
-final internal class BounceDownTransition: SJTransitionAnimator {
+final internal class BounceDownTransition: TransitionAnimator {
     
     override func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         super.animateTransition(using: transitionContext)
@@ -37,7 +37,7 @@ final internal class BounceDownTransition: SJTransitionAnimator {
     
 }
 
-final internal class BounceUpTransition: SJTransitionAnimator {
+final internal class BounceUpTransition: TransitionAnimator {
     
     override func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         super.animateTransition(using: transitionContext)
@@ -63,7 +63,7 @@ final internal class BounceUpTransition: SJTransitionAnimator {
     
 }
 
-final internal class ZoomTransition: SJTransitionAnimator{
+final internal class ZoomTransition: TransitionAnimator{
     override func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         super.animateTransition(using: transitionContext)
         
@@ -71,7 +71,7 @@ final internal class ZoomTransition: SJTransitionAnimator{
         case .in:
             toVC.view.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
             containerView.insertSubview(toVC.view, aboveSubview: fromVC.view)
-            UIView.animate(withDuration: inDuration, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: inDuration, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: [.curveEaseOut], animations: {
                 self.toVC.view.transform = CGAffineTransform(scaleX: 1, y: 1)
             }) { (completed) in
                 transitionContext.completeTransition(completed)
@@ -88,7 +88,7 @@ final internal class ZoomTransition: SJTransitionAnimator{
 }
 
 
-final internal class FadeTransition: SJTransitionAnimator {
+final internal class FadeTransition: TransitionAnimator {
     override func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         super.animateTransition(using: transitionContext)
         
@@ -108,6 +108,20 @@ final internal class FadeTransition: SJTransitionAnimator {
             }) { (completed) in
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }
+        }
+    }
+}
+
+final internal class NoneTransition: TransitionAnimator {
+    override func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        super.animateTransition(using: transitionContext)
+        
+        switch direction {
+        case .in:
+            containerView.insertSubview(toVC.view, aboveSubview: fromVC.view)
+            transitionContext.completeTransition(true)
+        case .out:
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }
 }

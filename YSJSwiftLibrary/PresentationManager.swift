@@ -1,5 +1,5 @@
 //
-//  SJPresentationManager.swift
+//  PresentationManager.swift
 //  YSJSwiftLibrary
 //
 //  Created by ysj on 2017/3/20.
@@ -17,11 +17,12 @@ internal enum SJAnimationDirection {
 @objc public enum SJTransitionStyle: Int {
     case bounceUp
     case bounceDown
-    case zoomIn
-    case fadeIn
+    case zoom
+    case fade
+    case none
 }
 
-final internal class SJPresentationManager: NSObject, UIViewControllerTransitioningDelegate {
+final internal class PresentationManager: NSObject, UIViewControllerTransitioningDelegate {
     
     var transitionStyle: SJTransitionStyle
     var inDuration: TimeInterval
@@ -44,31 +45,35 @@ final internal class SJPresentationManager: NSObject, UIViewControllerTransition
     
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        var transition: SJTransitionAnimator
+        var transition: TransitionAnimator
         switch transitionStyle {
         case .bounceDown:
             transition = BounceDownTransition(direction: .in, inDuration: inDuration, outDuration: outDuration)
         case .bounceUp:
             transition = BounceUpTransition(direction: .in, inDuration: inDuration, outDuration: outDuration)
-        case .fadeIn:
+        case .fade:
             transition = FadeTransition(direction: .in, inDuration: inDuration, outDuration: outDuration)
-        case .zoomIn:
+        case .zoom:
             transition = ZoomTransition(direction: .in, inDuration: inDuration, outDuration: outDuration)
+        case .none:
+            transition = NoneTransition(direction: .in, inDuration: inDuration, outDuration: outDuration)
         }
         return transition
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        var transition: SJTransitionAnimator
+        var transition: TransitionAnimator
         switch transitionStyle {
         case .bounceDown:
             transition = BounceDownTransition(direction: .out, inDuration: inDuration, outDuration: outDuration)
         case .bounceUp:
             transition = BounceUpTransition(direction: .out, inDuration: inDuration, outDuration: outDuration)
-        case .fadeIn:
+        case .fade:
             transition = FadeTransition(direction: .out, inDuration: inDuration, outDuration: outDuration)
-        case .zoomIn:
+        case .zoom:
             transition = ZoomTransition(direction: .out, inDuration: inDuration, outDuration: outDuration)
+        case .none:
+            transition = NoneTransition(direction: .out, inDuration: inDuration, outDuration: outDuration)
         }
         return transition
     }
