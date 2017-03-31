@@ -1,0 +1,6 @@
+framework module AlertHud {
+  umbrella header "AlertHud-umbrella.h"
+
+  export *
+  module * { export * }
+}

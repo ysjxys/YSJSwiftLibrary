@@ -14,12 +14,12 @@ internal class TransitionAnimator: NSObject, UIViewControllerAnimatedTransitioni
     var toVC: UIViewController!
     var fromVC: UIViewController!
     var containerView: UIView!
-    let direction: SJAnimationDirection
+    let direction: AHAnimationDirection
     var inDuration: TimeInterval
     var outDuration: TimeInterval
     
     
-    init(direction: SJAnimationDirection, inDuration: TimeInterval, outDuration: TimeInterval) {
+    init(direction: AHAnimationDirection, inDuration: TimeInterval, outDuration: TimeInterval) {
         self.direction = direction
         self.inDuration = inDuration
         self.outDuration = outDuration

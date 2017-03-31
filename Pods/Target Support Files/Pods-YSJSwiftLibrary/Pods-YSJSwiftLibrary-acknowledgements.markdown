@@ -24,6 +24,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+## AlertHud
+
+MIT
+
+
 ## CryptoSwift
 
 Copyright (C) 2014 Marcin Krzyżanowski <marcin.krzyzanowski@gmail.com>

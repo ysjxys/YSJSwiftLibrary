@@ -24,13 +24,6 @@
 		7E6743A01E6D077B00485407 /* HeadImageRollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67439F1E6D077B00485407 /* HeadImageRollView.swift */; };
 		7E7B015D1E1CF37E00D0D66E /* AppErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B015C1E1CF37E00D0D66E /* AppErrors.swift */; };
 		7E923AF91E7B8CA60052AECC /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923AF81E7B8CA60052AECC /* SecondViewController.swift */; };
-		7E923AFC1E7BC2D50052AECC /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923AFB1E7BC2D50052AECC /* AlertViewController.swift */; };
-		7E923AFE1E7BC2F40052AECC /* HudViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923AFD1E7BC2F40052AECC /* HudViewController.swift */; };
-		7E923B021E7BDBAA0052AECC /* AlertHudMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923B011E7BDBAA0052AECC /* AlertHudMacro.swift */; };
-		7E923B041E7FFA570052AECC /* PresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923B031E7FFA570052AECC /* PresentationManager.swift */; };
-		7E923B061E80C1880052AECC /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923B051E80C1880052AECC /* TransitionAnimator.swift */; };
-		7E923B081E80FFCC0052AECC /* TransitionAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923B071E80FFCC0052AECC /* TransitionAnimations.swift */; };
-		7EC1E5431E8BCF44001768CB /* AlertProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC1E5421E8BCF44001768CB /* AlertProperty.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,13 +71,6 @@
 		7E7B015C1E1CF37E00D0D66E /* AppErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppErrors.swift; sourceTree = "<group>"; };
 		7E7B015F1E1D14EF00D0D66E /* YSJSwiftLibrary-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YSJSwiftLibrary-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E923AF81E7B8CA60052AECC /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecondViewController.swift; path = ../SecondViewController.swift; sourceTree = "<group>"; };
-		7E923AFB1E7BC2D50052AECC /* AlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
-		7E923AFD1E7BC2F40052AECC /* HudViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudViewController.swift; sourceTree = "<group>"; };
-		7E923B011E7BDBAA0052AECC /* AlertHudMacro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHudMacro.swift; sourceTree = "<group>"; };
-		7E923B031E7FFA570052AECC /* PresentationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationManager.swift; sourceTree = "<group>"; };
-		7E923B051E80C1880052AECC /* TransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
-		7E923B071E80FFCC0052AECC /* TransitionAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionAnimations.swift; sourceTree = "<group>"; };
-		7EC1E5421E8BCF44001768CB /* AlertProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertProperty.swift; sourceTree = "<group>"; };
 		A92DB6017709FAA662A87B3F /* Pods_YSJSwiftLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YSJSwiftLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -152,7 +138,6 @@
 				7E7B015B1E1CF37E00D0D66E /* common */,
 				7E1C89521E08C400009A4990 /* Children */,
 				7E67439E1E6D071C00485407 /* headImageRoll */,
-				7E923AFA1E7BC12E0052AECC /* AlertHud */,
 				7E1C891D1E08C273009A4990 /* ViewController.swift */,
 				7E923AF81E7B8CA60052AECC /* SecondViewController.swift */,
 				7E1C891F1E08C273009A4990 /* Main.storyboard */,
@@ -210,20 +195,6 @@
 			);
 			name = common;
 			path = DataSave/common;
-			sourceTree = "<group>";
-		};
-		7E923AFA1E7BC12E0052AECC /* AlertHud */ = {
-			isa = PBXGroup;
-			children = (
-				7EC1E5421E8BCF44001768CB /* AlertProperty.swift */,
-				7E923B011E7BDBAA0052AECC /* AlertHudMacro.swift */,
-				7E923AFB1E7BC2D50052AECC /* AlertViewController.swift */,
-				7E923AFD1E7BC2F40052AECC /* HudViewController.swift */,
-				7E923B031E7FFA570052AECC /* PresentationManager.swift */,
-				7E923B051E80C1880052AECC /* TransitionAnimator.swift */,
-				7E923B071E80FFCC0052AECC /* TransitionAnimations.swift */,
-			);
-			name = AlertHud;
 			sourceTree = "<group>";
 		};
 		ACF5A2236EFE02DFB5D40CFD /* Frameworks */ = {
@@ -425,21 +396,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E1C891E1E08C273009A4990 /* ViewController.swift in Sources */,
-				7E923B061E80C1880052AECC /* TransitionAnimator.swift in Sources */,
-				7E923B081E80FFCC0052AECC /* TransitionAnimations.swift in Sources */,
-				7E923B021E7BDBAA0052AECC /* AlertHudMacro.swift in Sources */,
 				7E1C89241E08C273009A4990 /* YSJSwiftLibrary.xcdatamodeld in Sources */,
-				7E923B041E7FFA570052AECC /* PresentationManager.swift in Sources */,
 				7E6743A01E6D077B00485407 /* HeadImageRollView.swift in Sources */,
 				7E923AF91E7B8CA60052AECC /* SecondViewController.swift in Sources */,
 				7E1C89571E08C428009A4990 /* YSJTabBarController.swift in Sources */,
 				7E1C89581E08C428009A4990 /* YSJViewController.swift in Sources */,
 				7E1C89561E08C428009A4990 /* YSJNavigationController.swift in Sources */,
-				7EC1E5431E8BCF44001768CB /* AlertProperty.swift in Sources */,
 				7E7B015D1E1CF37E00D0D66E /* AppErrors.swift in Sources */,
-				7E923AFC1E7BC2D50052AECC /* AlertViewController.swift in Sources */,
 				7E1C891C1E08C273009A4990 /* AppDelegate.swift in Sources */,
-				7E923AFE1E7BC2F40052AECC /* HudViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

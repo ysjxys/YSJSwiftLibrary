@@ -18,56 +18,60 @@ public enum ImagePlace {
 
 
 public class HudViewController: UIViewController, UIViewControllerTransitioningDelegate {
+    
+    ///保存的静态参数
+    public static var shareHudProperty = HudProperty()
+    ///当前类的设定参数
+    public var hudProperty: HudProperty = HudProperty()
+    
+    //无需hudProperty赋值的属性们
     var delegate = PresentationManager(transitionStyle: .zoom, interactVC: nil, inDuration: 0.4, outDuration: 0.4)
-    public var inDuration: TimeInterval = 0.4 {
+    
+    //需要alertProperty赋值的属性们
+    var inDuration: TimeInterval = 0.4 {
         didSet{
             delegate.inDuration = inDuration
         }
     }
-    public var outDuration: TimeInterval = 0.4 {
+    var outDuration: TimeInterval = 0.4 {
         didSet{
             delegate.outDuration = outDuration
         }
     }
-    public var transitionStyle: SJTransitionStyle = .zoom {
+    var transitionStyle: AHTransitionStyle = .zoom {
         didSet{
             delegate.transitionStyle = transitionStyle
         }
     }
     
-    public var isAutoDisappear = true
-    public var hudLastTime: TimeInterval = 1
-    public var disappearClosure: ( () -> () )?
+    var isAutoDisappear = true
+    var hudLastTime: TimeInterval = 1
+    var disappearClosure: ( () -> () )?
     
-    ///是否需要蒙版
-    public var isNeedMaskView = false
-    ///蒙版View
-    public var maskView: UIView?
-    public var maskViewAlpha: CGFloat = CGFloat(0.5)
-    public var maskViewBackgroundColor = UIColor.black
+    var isNeedMaskView = false
+    var maskView: UIView?
+    var maskViewAlpha: CGFloat = CGFloat(0.5)
+    var maskViewBackgroundColor = UIColor.black
     
-    ///用户自定义View
-    public var customView: UIView?
+    var hudWidth = ahScreenFitSize(200)
+    var isHudWidthFitSize = true
+    var hudTopBottomEmptyDistance = ahScreenFitSize(10)
+    var hudBackgroundColor = UIColor.white
     
+    var isShowActivityIndicator = true
+    var activityColor = UIColor.lightGray
+    var activitySize: CGSize = CGSize(width: ahScreenFitSize(AHCGFloatHudActivityDefaultSize), height: ahScreenFitSize(AHCGFloatHudActivityDefaultSize))
     
-    public var hudWidth = ahScreenFitSize(200)
-    public var isHudWidthFitSize = true
-    public var hudTopBottomEmptyDistance = ahScreenFitSize(10)
-    public var hudBackgroundColor = UIColor.white
+    var message = ""
+    var messageLeftRightDistance = ahScreenFitSize(AHCGFloatMessaheLabelDefaultDistance)
+    var messageColor = UIColor.lightGray
+    var messageTextFont = UIFont.systemFont(ofSize: 17)
     
-    public var message = ""
-    public var messageLeftRightDistance = ahScreenFitSize(AHCGFloatMessaheLabelDefaultDistance)
-    public var messageColor = UIColor.lightGray//boldSystemFont
-    public var messageTextFont = UIFont.systemFont(ofSize: 17)
-    public var isShowActivityIndicator = true
-    public var activityColor = UIColor.lightGray
+    var customImage: UIImage?
+    var customImageSize: CGSize?
+    var imagePlace: ImagePlace = .left
     
-    public var activitySize: CGSize = CGSize(width: ahScreenFitSize(AHCGFloatHudActivityDefaultSize), height: ahScreenFitSize(AHCGFloatHudActivityDefaultSize))
-    
-    public var customImage: UIImage?
-    public var customImageSize: CGSize?
-    public var imagePlace: ImagePlace = .left
-    
+    var customView: UIView?
     
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -76,11 +80,10 @@ public class HudViewController: UIViewController, UIViewControllerTransitioningD
         }
     }
     
-    init(disappearClosure: ( () -> () )?) {
+    public init() {
         super.init(nibName: nil, bundle: nil)
         self.transitioningDelegate = delegate
         self.modalPresentationStyle = .overFullScreen
-        self.disappearClosure = disappearClosure
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -336,6 +339,40 @@ public class HudViewController: UIViewController, UIViewControllerTransitioningD
     
     deinit {
         print("HudViewController deinit")
+    }
+    
+    public func updateProperty() {
+        inDuration = hudProperty.inDuration
+        outDuration = hudProperty.outDuration
+        transitionStyle = hudProperty.transitionStyle
+        
+        isAutoDisappear = hudProperty.isAutoDisappear
+        hudLastTime = hudProperty.hudLastTime
+        disappearClosure = hudProperty.disappearClosure
+        
+        isNeedMaskView = hudProperty.isNeedMaskView
+        maskView = hudProperty.maskView
+        maskViewAlpha = hudProperty.maskViewAlpha
+        maskViewBackgroundColor = hudProperty.maskViewBackgroundColor
+        
+        customView = hudProperty.customView
+        
+        hudWidth = hudProperty.hudWidth
+        isHudWidthFitSize = hudProperty.isHudWidthFitSize
+        hudTopBottomEmptyDistance = hudProperty.hudTopBottomEmptyDistance
+        hudBackgroundColor = hudProperty.hudBackgroundColor
+        
+        message = hudProperty.message
+        messageLeftRightDistance = hudProperty.messageLeftRightDistance
+        messageColor = hudProperty.messageColor
+        messageTextFont = hudProperty.messageTextFont
+        isShowActivityIndicator = hudProperty.isShowActivityIndicator
+        activityColor = hudProperty.activityColor
+        activitySize = hudProperty.activitySize
+        
+        customImage = hudProperty.customImage
+        customImageSize = hudProperty.customImageSize
+        imagePlace = hudProperty.imagePlace
     }
     
     public func quitHud() {

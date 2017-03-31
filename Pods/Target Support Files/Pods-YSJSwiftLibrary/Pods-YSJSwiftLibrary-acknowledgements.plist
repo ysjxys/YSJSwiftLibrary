@@ -43,6 +43,17 @@ THE SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>MIT
+</string>
+			<key>License</key>
+			<string>MIT</string>
+			<key>Title</key>
+			<string>AlertHud</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>Copyright (C) 2014 Marcin Krzyżanowski &lt;marcin.krzyzanowski@gmail.com&gt;
 This software is provided 'as-is', without any express or implied warranty. 
 

@@ -12,72 +12,71 @@ import SnapKit
 
 public class AlertViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
+    ///保存的静态参数
+    public static var shareAlertProperty = AlertProperty()
+    ///当前类的设定参数
+    public var alertProperty: AlertProperty = AlertProperty()
+    
+    
+    //无需alertProperty赋值的属性们
     var delegate = PresentationManager(transitionStyle: .zoom, interactVC: nil, inDuration: 0.4, outDuration: 0.4)
-    public var inDuration: TimeInterval = 0.4 {
+    var messageLabel: UILabel?
+    var btnArray: [UIButton] = []
+    
+    
+    //需要alertProperty赋值的属性们
+    var inDuration: TimeInterval = 0.4 {
         didSet{
             delegate.inDuration = inDuration
         }
     }
-    public var outDuration: TimeInterval = 0.4 {
+    var outDuration: TimeInterval = 0.4 {
         didSet{
             delegate.outDuration = outDuration
         }
     }
-    public var transitionStyle: SJTransitionStyle = .zoom {
+    var transitionStyle: AHTransitionStyle = .zoom {
         didSet{
             delegate.transitionStyle = transitionStyle
         }
     }
-    public var alertProperty: AlertProperty = shareAlertProperty {
-        didSet{
-            message = alertProperty.message
-        }
-    }
     
-    public static var shareAlertProperty = AlertProperty()
-    ///是否需要蒙版
-    public var isNeedMaskView = true
-    ///蒙版View
-    public var maskView: UIView?
-    public var maskViewAlpha: CGFloat = CGFloat(0.3)
-    public var maskViewBackgroundColor = UIColor.black
+    var isNeedMaskView = true
+    var maskView: UIView?
+    var maskViewAlpha: CGFloat = CGFloat(0.3)
+    var maskViewBackgroundColor = UIColor.black
     
-    ///用户自定义View
-    public var customView: UIView?
-    public var customMessageView: UIView?
+    var alertViewWidth = ahScreenFitSize(AHCGFloatAlertDefaultWidth)
+    var alertBackgroundColor = UIColor.white
     
-    public var messageLeftRightDistance = ahScreenFitSize(AHCGFloatMessaheLabelDefaultDistance)
-    var messageLabel: UILabel?
-    public var messageHeight: CGFloat?
-//    public var message = alertProperty.message
-    public var message = ""
-    public var messageColor = UIColor.lightGray
-    public var messageTextFont = UIFont.systemFont(ofSize: 15)
+    var titleHeight = ahScreenFitSize(AHCGFloatTitleDefaultHeight)
+    var titleText: String?
+    var titleColor = UIColor.black
+    var titleTextFont = UIFont.systemFont(ofSize: 18)
     
-    public var isNeedTitleMessageSeparateLine = true
-    public var isNeedMessageBtnSeparateLine = true
-    public var isNeedBtnsSeparateLine = true
-    public var separateLineColor = UIColor.groupTableViewBackground
-    public var separateLineWidth = CGFloat(0.5)
+    var messageLeftRightDistance = ahScreenFitSize(AHCGFloatMessaheLabelDefaultDistance)
+    var messageHeight: CGFloat?
+    var message = ""
+    var messageColor = UIColor.lightGray
+    var messageTextFont = UIFont.systemFont(ofSize: 15)
+    var titleMessageLabelsAttributeClosure: ( (UILabel, UILabel?) -> () )?
     
-    public var alertViewWidth = ahScreenFitSize(AHCGFloatAlertDefaultWidth)
-    public var alertBackgroundColor = UIColor.white
+    var btnHeight = ahScreenFitSize(AHCGFloatBtnDefaultHeight)
+    var isBtnHorizontal = true
+    var btnTitleArray: [String] = []
+    var btnAttributeClosure: ( ([UIButton]) -> () )?
+    var btnSelectClosure: ( (UIButton, Int) -> () )?
     
-    public var titleHeight = ahScreenFitSize(AHCGFloatTitleDefaultHeight)
-    public var titleText: String?
-    public var titleColor = UIColor.black
-    public var titleTextFont = UIFont.systemFont(ofSize: 18)
+    var isNeedTitleMessageSeparateLine = true
+    var isNeedMessageBtnSeparateLine = true
+    var isNeedBtnsSeparateLine = true
+    var separateLineColor = UIColor.groupTableViewBackground
+    var separateLineWidth = CGFloat(0.5)
     
-    public var btnHeight = ahScreenFitSize(AHCGFloatBtnDefaultHeight)
-    public var isBtnHorizontal = true
-    public var btnTitleArray: [String] = []
-    var btnArray: [UIButton] = []
-    public var btnAttributeClosure: ( ([UIButton]) -> () )?
-    public var btnSelectClosure: ( (UIButton, Int) -> () )?
-    public var titleMessageLabelsAttributeClosure: ( (UILabel, UILabel?) -> () )?
+    var customView: UIView?
+    var customMessageView: UIView?
     
-    
-    init() {
+    public init() {
         super.init(nibName: nil, bundle: nil)
         self.transitioningDelegate = delegate
         self.modalPresentationStyle = .overFullScreen
@@ -172,6 +171,7 @@ public class AlertViewController: UIViewController, UIViewControllerTransitionin
         titleLabel.textColor = titleColor
         titleLabel.font = titleTextFont
         titleLabel.textAlignment = .center
+        titleLabel.backgroundColor = UIColor.clear
         cornerRadiusBackView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(alertView)
@@ -283,10 +283,9 @@ public class AlertViewController: UIViewController, UIViewControllerTransitionin
             messageView = messageLabel!
         }
         messageView.clipsToBounds = true
+        messageView.backgroundColor = UIColor.clear
         cornerRadiusBackView.insertSubview(messageView, belowSubview: titleLabel)
         messageView.snp.makeConstraints({ (make) in
-//            make.centerX.equalTo(alertView)
-            
             make.top.equalTo(titleLabel.snp.bottom)
             make.left.equalTo(alertView).offset(messageLeftRightDistance)
             make.right.equalTo(alertView).offset(-messageLeftRightDistance)
@@ -332,13 +331,54 @@ public class AlertViewController: UIViewController, UIViewControllerTransitionin
         print("AlertViewController deinit")
     }
     
+    public func updateProperty() {
+        inDuration = alertProperty.inDuration
+        outDuration = alertProperty.outDuration
+        transitionStyle = alertProperty.transitionStyle
+        
+        isNeedMaskView = alertProperty.isNeedMaskView
+        maskView = alertProperty.maskView
+        maskViewAlpha = alertProperty.maskViewAlpha
+        maskViewBackgroundColor = alertProperty.maskViewBackgroundColor
+        
+        customView = alertProperty.customView
+        customMessageView = alertProperty.customMessageView
+        
+        messageLeftRightDistance = alertProperty.messageLeftRightDistance
+        messageHeight = alertProperty.messageHeight
+        message = alertProperty.message
+        messageColor = alertProperty.messageColor
+        messageTextFont = alertProperty.messageTextFont
+        
+        isNeedTitleMessageSeparateLine = alertProperty.isNeedTitleMessageSeparateLine
+        isNeedMessageBtnSeparateLine = alertProperty.isNeedMessageBtnSeparateLine
+        isNeedBtnsSeparateLine = alertProperty.isNeedBtnsSeparateLine
+        separateLineColor = alertProperty.separateLineColor
+        separateLineWidth = alertProperty.separateLineWidth
+        
+        alertViewWidth = alertProperty.alertViewWidth
+        alertBackgroundColor = alertProperty.alertBackgroundColor
+        
+        titleHeight = alertProperty.titleHeight
+        titleText = alertProperty.titleText
+        titleColor = alertProperty.titleColor
+        titleTextFont = alertProperty.titleTextFont
+        
+        btnHeight = alertProperty.btnHeight
+        isBtnHorizontal = alertProperty.isBtnHorizontal
+        btnTitleArray = alertProperty.btnTitleArray
+        btnAttributeClosure = alertProperty.btnAttributeClosure
+        btnSelectClosure = alertProperty.btnSelectClosure
+        titleMessageLabelsAttributeClosure = alertProperty.titleMessageLabelsAttributeClosure
+    }
+    
     func btnSelect(btn: UIButton) {
         if btnSelectClosure != nil {
             btnSelectClosure!(btn, btn.tag)
         }
     }
     
-    func quitAlert(completeClosure: ( () -> () )? ) {
+    public func quitAlert(completeClosure: ( () -> () )? ) {
         dismiss(animated: true, completion: completeClosure)
     }
 }

@@ -14,6 +14,8 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - AlertHud (1.0.0):
+    - SnapKit
   - CryptoSwift (0.6.7)
   - FDFullscreenPopGesture (1.1)
   - FMDB (2.6.2):
@@ -38,6 +40,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1)
+  - AlertHud (~> 1.0.0)
   - CryptoSwift (~> 0.6.7)
   - FDFullscreenPopGesture (~> 1.1)
   - FMDB (~> 2.6)
@@ -55,6 +58,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  AlertHud: 25ef4d0c4e2018c391a07f241c9de539ec341098
   CryptoSwift: 685ae257941e5447474348a2b545583e1a16b573
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
@@ -70,6 +74,6 @@ SPEC CHECKSUMS:
   UMengSocialCOM: 074c135ce349aa4c8848d3fb8458757bcb6ffb67
   ViewDeck: 0b7b83bc2782a20dfb76207d0a2e8c5e6a6d182d
 
-PODFILE CHECKSUM: 033b08f0d19999f393cde4134bccb8582f7b3a06
+PODFILE CHECKSUM: a3cec239a2e2bc5068e18d17b5c786a6530d1632
 
 COCOAPODS: 1.1.1

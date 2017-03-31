@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-internal enum SJAnimationDirection {
+internal enum AHAnimationDirection {
     case `in`
     case out
 }
 
-@objc public enum SJTransitionStyle: Int {
+@objc public enum AHTransitionStyle: Int {
     case bounceUp
     case bounceDown
     case zoom
@@ -24,13 +24,13 @@ internal enum SJAnimationDirection {
 
 final internal class PresentationManager: NSObject, UIViewControllerTransitioningDelegate {
     
-    var transitionStyle: SJTransitionStyle
+    var transitionStyle: AHTransitionStyle
     var inDuration: TimeInterval
     var outDuration: TimeInterval
     
     var interactVC: UIViewController?
     
-    init(transitionStyle: SJTransitionStyle, interactVC: UIViewController?, inDuration: TimeInterval, outDuration: TimeInterval) {
+    init(transitionStyle: AHTransitionStyle, interactVC: UIViewController?, inDuration: TimeInterval, outDuration: TimeInterval) {
         self.transitionStyle = transitionStyle
         self.interactVC = interactVC
         self.inDuration = inDuration
