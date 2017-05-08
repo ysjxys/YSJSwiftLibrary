@@ -18,6 +18,24 @@ class SecondViewController:  UIViewController{
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "right", style: .plain, target: self, action: #selector(rightBarBtnClick))
         
+        let label = YSJLabel()
+//        label.frame = CGRect(x: 120, y: 100, width: view.frame.width-120*2, height: 70)
+        label.backgroundColor = UIColor.lightGray
+        label.text = "我是测试文字"
+        label.textAlignment = .center
+        label.verticalAlignment = .top
+        view.addSubview(label)
+        label.snp.makeConstraints { (make) in
+//            make.top.equalToSuperview().offset(100)
+//            make.left.equalToSuperview().offset(120)
+//            make.height.equalTo(70)
+//            make.right.equalToSuperview().inset(120)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(200)
+            make.width.equalTo(200)
+            make.height.equalTo(70)
+        }
+        
         let alertBtn = UIButton(frame: CGRect(x: 120, y: 200, width: view.frame.width-120*2, height: 70))
         alertBtn.setTitle("显示Alert", for: .normal)
         alertBtn.setTitleColor(UIColor.white, for: .normal)

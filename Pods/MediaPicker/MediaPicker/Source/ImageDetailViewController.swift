@@ -45,38 +45,17 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
     var detailArrayOffSetIndex = 0
     //当前页面下标
     var currentIndex = 0
-    //最大选择图片数量
-    var maxChooseNum = 9
     //初始化前后图片数量
     let scrollPagePrepareNum = 3
     //是否正在转屏
     var isTransition = false
     //根据vc隐藏或显示而改变，从而控制scroll不进入不必要的delegate
     var isViewControllerShow = true
-    //根据之前选择的模式，传入的选择模式
-    var chooseType: ChooseType = .headImageType
-    //单个选中图片
-    var selectImage: UIImage?
-    //头像选择模式回调
-    var chooseHeadImageClosure: ( (UIImage?) -> () )?
-    //分享模式回调
-    var chooseImagesClosure: ( ([PHAsset]? ) -> () )?
-    //是否present展示
-    var isShowByPresent = true
     //imageReuestOptions
     var options = PHImageRequestOptions()
-    //主题颜色
-    var themeColor = ipColorFromHex(IPHexColorNextBtn)
-    //图片选择按钮背景色
-    var selectBackgroundColor = ipColorFromHex(IPHexColorNextBtn)
-    //图片选择按钮文字颜色
-    var selectNumTextColor = ipColorFromHex(IPHexColorNextBtn)
     //转屏时视觉效果结构体
     var coverSinglePage = SinglePage()
     var shouldPopVC: UIViewController?
-    var isComingVCTabBarShow = true
-    var isComingVCNavigationBarShow = true
-    var isComingVCStatusBarShow = true
     
     let widthConstraintKey = "widthConstraintKey"
     let heightConstraintKey = "heightConstraintKey"
@@ -516,16 +495,21 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         selectNumLabel.frame = CGRect(x: ipFitSize((btnWidth-IPCGFloatDetailSelectBtnWidth)/2), y: (selectBtn.frame.height-ipFitSize(IPCGFloatDetailSelectBtnWidth))/2, width: ipFitSize(IPCGFloatDetailSelectBtnWidth), height: ipFitSize(IPCGFloatDetailSelectBtnWidth))
         selectNumLabel.textAlignment = .center
         selectNumLabel.font = UIFont.systemFont(ofSize: 15)
-        selectNumLabel.textColor = selectNumTextColor
+        selectNumLabel.textColor = MPProperty.selectNumTextColor
         selectNumLabel.isUserInteractionEnabled = false
-        selectNumLabel.backgroundColor = selectBackgroundColor
+        selectNumLabel.backgroundColor = MPProperty.selectBackgroundColor
         selectNumLabel.layer.cornerRadius = selectNumLabel.frame.width/2
         selectNumLabel.layer.masksToBounds = true
         selectBtn.addSubview(selectNumLabel)
         
         
         selectImageView.backgroundColor = UIColor.clear
-        selectImageView.image = selectImage
+        if MPProperty.chooseType == .headImageType || MPProperty.isUseSelectImageInShareImageType {
+            selectImageView.image = MPProperty.selectImage
+            selectImageView.isHidden = false
+        } else {
+            selectImageView.isHidden = true
+        }
         selectNumLabel.addSubview(selectImageView)
         
         //底部栏
@@ -533,8 +517,8 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         view.addSubview(bottomView)
         
         //确认按钮
-        sureBtn.setTitleColor(themeColor, for: .disabled)
-        sureBtn.setTitleColor(themeColor, for: .normal)
+        sureBtn.setTitleColor(MPProperty.themeColor, for: .disabled)
+        sureBtn.setTitleColor(MPProperty.themeColor, for: .normal)
         sureBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         sureBtn.contentHorizontalAlignment = .right
         sureBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 15)
@@ -580,6 +564,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         coverSinglePage.pageImageView.backgroundColor = UIColor.black
         coverSinglePage.pageScrollView.addSubview(coverSinglePage.pageImageView)
         
+        //假button，仅为转屏动画时使用
         let pageBtn = UIButton()
         pageBtn.backgroundColor = UIColor.clear
         pageBtn.setImage(imageFromBundle(imageName: IPImageNamePlayButtonIcon), for: .disabled)
@@ -628,6 +613,9 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         guard pageViewDic[index] == nil else {
             return
         }
+        guard let phAsset = detailArray[index].phAsset else {
+            return
+        }
         
         var singlePage = SinglePage()
         
@@ -650,26 +638,36 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         singlePage.pageImageView.backgroundColor = UIColor.black
         
         if detailArray[index].phAsset != nil {
-            PHImageManager.default().requestImage(for: detailArray[index].phAsset!, targetSize: CGSize(width: singlePage.pageScrollView.frame.width/4, height: singlePage.pageScrollView.frame.height/4), contentMode: PHImageContentMode.aspectFill, options: options) { (image: UIImage?, info: [AnyHashable : Any]?) in
-
+            
+            let options = PHImageRequestOptions()
+            options.deliveryMode = .fastFormat
+            options.resizeMode = .fast
+            options.isNetworkAccessAllowed = true
+            
+            RequestImageHelper.shared.requestImage(options: options, showHudView: view, targetSize: CGSize(width: singlePage.pageScrollView.frame.width/4, height: singlePage.pageScrollView.frame.height/4), phAsset: phAsset, progressHandle: nil, resultHandle: { (alert, image) in
+                
                 //需要根据image的大小调整imageView的size以保证后续zoom的边界不会过大
-                if image!.size.width >= image!.size.height*self.view.frame.width/self.view.frame.height{
-                    //当 w >= W*h/H ，即宽度过大时， 以宽度为基准调整imageView的高度
-                    let imgViewW = self.view.frame.width
-                    let imgViewH = image!.size.height * imgViewW / image!.size.width
-                    singlePage.pageImageView.frame = CGRect(x: 0, y: (self.view.frame.height-imgViewH)/2, width: imgViewW, height: imgViewH)
-                }else{
-                    //其余情况以高度为基准调整imageView的宽度
-                    let imgViewH = self.view.frame.height
-                    let imgViewW = image!.size.width * imgViewH / image!.size.height
-                    singlePage.pageImageView.frame = CGRect(x: (self.view.frame.width-imgViewW)/2, y: 0, width: imgViewW, height: imgViewH)
+                DispatchQueue.main.async {
+                    if image!.size.width >= image!.size.height*self.view.frame.width/self.view.frame.height{
+                        //当 w >= W*h/H ，即宽度过大时， 以宽度为基准调整imageView的高度
+                        let imgViewW = self.view.frame.width
+                        let imgViewH = image!.size.height * imgViewW / image!.size.width
+                        singlePage.pageImageView.frame = CGRect(x: 0, y: (self.view.frame.height-imgViewH)/2, width: imgViewW, height: imgViewH)
+                    }else{
+                        //其余情况以高度为基准调整imageView的宽度
+                        let imgViewH = self.view.frame.height
+                        let imgViewW = image!.size.width * imgViewH / image!.size.height
+                        singlePage.pageImageView.frame = CGRect(x: (self.view.frame.width-imgViewW)/2, y: 0, width: imgViewW, height: imgViewH)
+                    }
+                    if let pageBtn = singlePage.pageBtn {
+                        pageBtn.frame = singlePage.pageImageView.frame
+                    }
+                    singlePage.pageImageView.image = image
                 }
-                singlePage.pageImageView.image = image
-            }
+            })
         }
         
         if detailArray[index].modelType == .videoAssetModel {
-            
             let pageBtn = UIButton(frame: singlePage.pageImageView.bounds)
             pageBtn.backgroundColor = UIColor.clear
             pageBtn.setImage(imageFromBundle(imageName: IPImageNamePlayButtonIcon), for: .normal)
@@ -707,31 +705,56 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         }
     }
     
+    func updateUserEnable(_ isEnable: Bool) {
+        selectBtn.isEnabled = isEnable
+        sureBtn.isEnabled = isEnable
+        scrollView.isScrollEnabled = isEnable
+        pageViewDic[currentIndex]?.pageBtn?.isEnabled = isEnable
+        pageViewDic[currentIndex]?.pageScrollView.isScrollEnabled = isEnable
+    }
+    
     // MARK: - Tap&Click Method
     func playBtnClick(playBtn: UIButton) {
         guard playBtn.superview != nil else {
             return
         }
+        
         let cellModel: ImageCellModel? = detailArray[currentIndex]
-        guard cellModel?.phAsset != nil else {
+        guard let phAsset = cellModel?.phAsset else {
             return
         }
         
-        PHImageManager.default().requestAVAsset(forVideo: cellModel!.phAsset!, options: nil, resultHandler: { (asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) in
-            
-            //播放一个从未播放过的资源
-            if self.avPlayItemDic[self.currentIndex] == nil{
-                let item = AVPlayerItem(asset: asset!)
-                self.avPlayItemDic[self.currentIndex] = item
-                self.addtNotification(avPlayerItem: item)
+        RequestImageHelper.shared.requestVideo(showHudView: view, phAsset: phAsset, progressHandle: { [weak self] in
+            guard let weakSelf = self else {
+                return
             }
-            self.avPlayer.replaceCurrentItem(with: self.avPlayItemDic[self.currentIndex])
+            weakSelf.updateUserEnable(false)
+        }) { [weak self] (alert, avAsset) in
+            DispatchQueue.main.async {
+                if alert.superview != nil {
+                    alert.removeFromSuperview()
+                }
+            }
+            guard let weakSelf = self else {
+                return
+            }
+            guard let asset = avAsset else {
+                return
+            }
+            weakSelf.updateUserEnable(true)
+            //播放一个从未播放过的资源
+            if weakSelf.avPlayItemDic[weakSelf.currentIndex] == nil{
+                let item = AVPlayerItem(asset: asset)
+                weakSelf.avPlayItemDic[weakSelf.currentIndex] = item
+                weakSelf.addtNotification(avPlayerItem: item)
+            }
+            weakSelf.avPlayer.replaceCurrentItem(with: weakSelf.avPlayItemDic[weakSelf.currentIndex])
             
             DispatchQueue.main.sync {
-                self.videoView.isHidden = false
-                self.avPlayer.play()
+                weakSelf.videoView.isHidden = false
+                weakSelf.avPlayer.play()
             }
-        })
+        }
     }
     
     func singleTapClick() {
@@ -790,7 +813,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
     
     func selectBtnClick(btn: UIButton) {
         
-        switch chooseType {
+        switch MPProperty.chooseType {
         case .headImageType:
             //若之前有选中的图片，取消之
             if updateSelectArray.count > 0 {
@@ -808,7 +831,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
                 updateSelectArray.append(detailArray[currentIndex])
             }
         case .shareImageType:
-            if updateSelectArray.count >= maxChooseNum && detailArray[currentIndex].isSelected == false{
+            if updateSelectArray.count >= MPProperty.maxChooseNum && detailArray[currentIndex].isSelected == false{
                 showHud(targetView: view, title: IPStringSelectTheMost, completeClosure: nil)
                 return
             }
@@ -843,58 +866,77 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
             updateSelectArray.append(detailArray[currentIndex])
         }
         
-        switch chooseType {
+        switch MPProperty.chooseType {
         case .headImageType:
-            PHImageManager.default().requestImage(for: detailArray[currentIndex].phAsset!, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: options, resultHandler: { (image: UIImage?, info: [AnyHashable : Any]?) in
+            guard let phAsset = detailArray[currentIndex].phAsset else {
+                return
+            }
+            RequestImageHelper.shared.requestImage(showHudView: view, targetSize: PHImageManagerMaximumSize, phAsset: phAsset, progressHandle: nil, resultHandle: { [weak self] (alert, image) in
+                DispatchQueue.main.async {
+                    if alert.superview != nil {
+                        alert.removeFromSuperview()
+                    }
+                }
+                guard let weakSelf = self else {
+                    return
+                }
+                guard let image = image else {
+                    return
+                }
                 
                 let editHeadImageVC = EditHeadImageViewController()
                 editHeadImageVC.headImage = image
                 editHeadImageVC.isComingFromDetail = true
-                editHeadImageVC.updateSelectArray = self.updateSelectArray
-                editHeadImageVC.chooseHeadImageClosure = self.chooseHeadImageClosure
-                editHeadImageVC.isShowByPresent = self.isShowByPresent
-                editHeadImageVC.shouldPopVC = self.shouldPopVC
-                editHeadImageVC.isComingVCStatusBarShow = self.isComingVCStatusBarShow
-                editHeadImageVC.isComingVCNavigationBarShow = self.isComingVCNavigationBarShow
-                editHeadImageVC.isComingVCTabBarShow = self.isComingVCTabBarShow
-                self.hidesBottomBarWhenPushed = true
-                self.navigationController?.setNavigationBarHidden(true, animated: false)
-                self.navigationController?.pushViewController(editHeadImageVC, animated: true)
+                editHeadImageVC.updateSelectArray = weakSelf.updateSelectArray
+                editHeadImageVC.shouldPopVC = weakSelf.shouldPopVC
+                weakSelf.hidesBottomBarWhenPushed = true
+                weakSelf.navigationController?.setNavigationBarHidden(true, animated: false)
+                weakSelf.navigationController?.pushViewController(editHeadImageVC, animated: true)
             })
 
         case .shareImageType:
-            if let closure = chooseImagesClosure {
-                var phAssetArray: [PHAsset] = []
-                
-                for index in 0..<updateSelectArray.count {
-                    guard (updateSelectArray[index].phAsset != nil)  else {
+            var phAssetArray: [PHAsset] = []
+            
+            for index in 0..<updateSelectArray.count {
+                guard (updateSelectArray[index].phAsset != nil)  else {
+                    continue
+                }
+                phAssetArray.append(updateSelectArray[index].phAsset!)
+            }
+            
+            if let closure = MPProperty.chooseShareAssetClosure {
+                closure(phAssetArray)
+            }
+            
+            if let closure = MPProperty.chooseShareImageClosure {
+                var imageArray: [UIImage] = []
+                for index in 0..<phAssetArray.count {
+                    guard let phAsset = updateSelectArray[index].phAsset else {
+                        imageArray.append(UIImage())
                         continue
                     }
-                    phAssetArray.append(updateSelectArray[index].phAsset!)
-                }
-                
-                if isComingVCStatusBarShow {
-                    UIApplication.shared.setStatusBarHidden(false, with: .none)
-                }else{
-                    UIApplication.shared.setStatusBarHidden(true, with: .none)
-                }
-                if isShowByPresent {
-                    self.dismiss(animated: true, completion: nil)
-                }else{
-                    if let shouldPopVC = shouldPopVC {
-                        hidesBottomBarWhenPushed = isComingVCTabBarShow ? false : true
-                        if isComingVCNavigationBarShow {
-                            navigationController?.setNavigationBarHidden(false, animated: false)
-                        }else{
-                            navigationController?.setNavigationBarHidden(true, animated: false)
+                    RequestImageHelper.shared.requestImage(showHudView: view, targetSize: MPProperty.resultImageTargetSize, phAsset: phAsset, progressHandle: nil, resultHandle: { [weak self] (alert, image) in
+                        guard let weakSelf = self else {
+                            return
                         }
                         
-                        _ = navigationController?.popToViewController(shouldPopVC, animated: true)
-                    }else {
-                        _ = navigationController?.popToRootViewController(animated: true)
-                    }
+                        if let image = image {
+                            imageArray.append(image)
+                        } else {
+                            imageArray.append(UIImage())
+                        }
+                        
+                        if imageArray.count == weakSelf.updateSelectArray.count {
+                            DispatchQueue.main.async {
+                                if alert.superview != nil {
+                                    alert.removeFromSuperview()
+                                }
+                                checkAndChangeBars(controller: weakSelf, shouldPopVC: weakSelf.shouldPopVC)
+                                closure(imageArray)
+                            }
+                        }
+                    })
                 }
-                closure(phAssetArray)
             }
         }
     }
@@ -975,10 +1017,32 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         //PHImageManagerMaximumSize 获得原图尺寸
         //高清图片没有值，初始化之，有值直接拿来用
         if pageViewDic[currentIndex]?.clearImage == nil {
-            PHImageManager.default().requestImage(for: detailArray[currentIndex].phAsset!, targetSize:CGSize(width: scroll.frame.width*2, height: scroll.frame.height*2) , contentMode: PHImageContentMode.aspectFill, options: options) { [unowned self] (image: UIImage?, info: [AnyHashable : Any]?) in
-                imgView?.image = image
-                self.pageViewDic[self.currentIndex]?.clearImage = image
+            guard let phAsset = detailArray[currentIndex].phAsset else {
+                return
             }
+            RequestImageHelper.shared.requestImage(showHudView: view, targetSize: CGSize(width: scroll.frame.width*2, height: scroll.frame.height*2), phAsset: phAsset, progressHandle: { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                weakSelf.updateUserEnable(false)
+            }, resultHandle: { [weak self] (alert, image) in
+                DispatchQueue.main.async {
+                    if alert.superview != nil {
+                        alert.removeFromSuperview()
+                    }
+                }
+                guard let weakSelf = self else {
+                    return
+                }
+                guard let image = image else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    imgView?.image = image
+                    weakSelf.pageViewDic[weakSelf.currentIndex]?.clearImage = image
+                }
+                weakSelf.updateUserEnable(true)
+            })
         }else{
             imgView?.image = pageViewDic[currentIndex]?.clearImage
         }

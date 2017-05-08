@@ -56,69 +56,37 @@ public enum DetailType {
 
 public class ImagePickerViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ImageCollectionCellViewDelegate{
     
-    var collectionView: UICollectionView!
-    var cellModelArray: [ImageCellModel] = []
-    var updateSelectArray: [ImageCellModel] = []
+    private var rightBarButtonItem: UIBarButtonItem = UIBarButtonItem()
+    private var collectionView: UICollectionView!
+    private var cellModelArray: [ImageCellModel] = []
+    private var updateSelectArray: [ImageCellModel] = [] {
+        didSet {
+            rightBarButtonItem.isEnabled = !updateSelectArray.isEmpty
+        }
+    }
     
     //用于更新collectionCellView的选中状态
-    var tempUpdateCellSet: Set<IndexPath> = []
+    private var tempUpdateCellSet: Set<IndexPath> = []
     //获得数据是否成功
-    var isGetMediaSuccess = true
+    private var isGetMediaSuccess = true
     //最初通过push进入的VC
-    var shouldPopVC: UIViewController?
+    private var shouldPopVC: UIViewController?
     
-    
-    
-    //主题颜色
-    public var themeColor = ipColorFromHex(IPHexColorNextBtn)
-    //图片选择按钮背景色
-    public var selectBackgroundColor = ipColorFromHex(IPHexColorNextBtn)
-    //图片选择按钮文字颜色
-    public var selectNumTextColor = ipColorFromHex(IPHexColorSelectNumLabelText)
+    //navigationBar左侧导航按钮属性配置
+    public var leftBarBtnAttributeClosure: ((UIBarButtonItem) -> ())?
+    //navigationBar右侧导航按钮属性配置
+    public var rightBarBtnAttributeClosure: ((UIBarButtonItem) -> ())?
+    //是否需要拍照按钮
+    public var isNeedCameraBtn = true
     //拍照按钮图片
     public var cameraBtnImage: UIImage?
     //选择是否新的照片在前
-    public var isNewPhotoFront = false
-    //选择模式，头像模式或分享模式，默认为分享模式
-    public var chooseType: ChooseType = .shareImageType
+    public var isNewPhotoFront = true
     //选择类型，默认为只选择图片
     public var detailType: DetailType = .imageOnlyType
-    //选择分享模式时的最大可选图片数量
-    public var maxChooseNum = 9
-    //勾选图片
-    public var selectImage: UIImage? = imageFromBundle(imageName: IPImageNameSelectCamera)
-    //是否在shareImage模式下启用勾选图片
-    public var isUseSelectImageInShareImageType = false
-    //头像选择模式回调
-    public var chooseHeadImageClosure: ( (UIImage?) -> () )?
-    //分享模式回调
-    public var chooseImagesClosure: ( ([PHAsset]?) -> () )?
-    //失败回调
-    public var failClosure: ( () -> () )?
-    
-    //展示模式，默认为present式
-    public var isShowByPresent = true
-    //进入MediaPlayer的页面的tabBar是否显示
-    public var isComingVCTabBarShow = true
-    //进入MediaPlayer的页面的navigationBar是否显示
-    public var isComingVCNavigationBarShow = true
-    //进入MediaPlayer的页面的statusBar是否显示
-    public var isComingVCStatusBarShow = true
     
     override public var prefersStatusBarHidden: Bool{
         return false
-    }
-    
-    // MARK: - init Method
-    public init(chooseHeadImageClosure: ( (UIImage?) -> () )?, chooseImagesClosure: ( ([PHAsset]?) -> () )?, failClosure: ( () -> () )?) {
-        super.init(nibName: nil, bundle: nil)
-        self.chooseImagesClosure = chooseImagesClosure
-        self.chooseHeadImageClosure = chooseHeadImageClosure
-        self.failClosure = failClosure
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - LifeCircle Method
@@ -129,20 +97,19 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
         initConstraint()
         initNotification()
         
-        weak var weakSelf = self
-        guard weakSelf != nil else {
-            return
-        }
-        PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) in
+        PHPhotoLibrary.requestAuthorization({ [weak self] (status: PHAuthorizationStatus) in
+            guard let weakSelf = self else {
+                return
+            }
             if status == PHAuthorizationStatus.authorized{
-                weakSelf!.initData()
+                weakSelf.initData()
                 DispatchQueue.main.async {
-                    weakSelf!.collectionView.reloadData()
+                    weakSelf.collectionView.reloadData()
                 }
             }else{
-                weakSelf!.isGetMediaSuccess = false
-                showHud(targetView: weakSelf!.view, title: IPStringPhotoLibraryForbiddenWarningMsg, completeClosure: {
-                    if let failClosure = self.failClosure {
+                weakSelf.isGetMediaSuccess = false
+                showHud(targetView: weakSelf.view, title: IPStringPhotoLibraryForbiddenWarningMsg, completeClosure: {
+                    if let failClosure = MPProperty.failClosure {
                         failClosure()
                     }
                 })
@@ -153,6 +120,10 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
@@ -173,7 +144,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     }
     
     // MARK: - Notification Method
-    func initNotification() {
+    private func initNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateArrayCollectionVC(notification:)), name: updateArrayCollectionVCNotificationName, object: nil)
     }
     
@@ -201,7 +172,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
         updateCollectionItems()
     }
     
-    func updateCollectionItems() {
+    private func updateCollectionItems() {
         var indexPathArray: [IndexPath] = []
         for indexPath in tempUpdateCellSet {
             indexPathArray.append(indexPath)
@@ -211,12 +182,12 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     }
     
     // MARK: - Custom Method
-    func initView() {
+    private func initView() {
         view.backgroundColor = UIColor.white
         
         var rightItemTitle = ""
         
-        switch chooseType {
+        switch MPProperty.chooseType {
         case .shareImageType:
             navigationItem.title = IPStringCamera
             rightItemTitle = IPStringComplete
@@ -225,15 +196,33 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
             rightItemTitle = IPStringNextStep
         }
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: IPStringBack, style: .plain, target: self, action: #selector(backBarBtnClick))
+        let leftBarButtonItem = UIBarButtonItem()
+        if let closure = leftBarBtnAttributeClosure {
+            closure(leftBarButtonItem)
+        } else {
+            leftBarButtonItem.title = IPStringBack
+            leftBarButtonItem.style = .plain
+        }
+        leftBarButtonItem.target = self
+        leftBarButtonItem.action = #selector(backBarBtnClick)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: rightItemTitle, style: .plain, target: self, action: #selector(rightBtnClick))
-        navigationItem.rightBarButtonItem?.isEnabled = false
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: themeColor], for: .normal)
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.lightGray], for: .disabled)
+        if let closure = leftBarBtnAttributeClosure {
+            closure(rightBarButtonItem)
+        } else {
+            rightBarButtonItem.title = rightItemTitle
+            rightBarButtonItem.style = .plain
+        }
+        rightBarButtonItem.target = self
+        rightBarButtonItem.action = #selector(rightBtnClick)
+        rightBarButtonItem.isEnabled = false
+        rightBarButtonItem.setTitleTextAttributes([NSForegroundColorAttributeName: MPProperty.themeColor], for: .normal)
+        rightBarButtonItem.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.lightGray], for: .disabled)
+        
+        navigationItem.leftBarButtonItem = leftBarButtonItem
+        navigationItem.rightBarButtonItem = rightBarButtonItem
         
         //导航栏按钮颜色
-        navigationController?.navigationBar.tintColor = themeColor
+        navigationController?.navigationBar.tintColor = MPProperty.themeColor
         //导航栏背景色
         navigationController?.navigationBar.barTintColor = UIColor.white
         //导航栏文字颜色
@@ -248,7 +237,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
         view.addSubview(collectionView)
     }
     
-    func initConstraint() {
+    private func initConstraint() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         let collectionCenterXConstraint = NSLayoutConstraint(item: collectionView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0)
@@ -265,31 +254,39 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
         collectionHeightConstraint.isActive = true
     }
     
-    func initData() {
-        if !isShowByPresent && navigationController != nil{
+    private func initData() {
+        if !MPProperty.isShowByPresent && navigationController != nil {
             shouldPopVC = navigationController?.viewControllers[navigationController!.viewControllers.count-2]
         }
         
-        let albumsResult = PHAssetCollection.fetchAssetCollections(with: PHAssetCollectionType.smartAlbum, subtype: PHAssetCollectionSubtype.albumRegular, options: nil)
-        var fetchzResult: PHFetchResult<PHAsset>?
+        let albumsResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
+        var fetchResult: PHFetchResult<PHAsset>?
         for i in 0..<albumsResult.count {
             let assetCollection = albumsResult.object(at: i)
             if let title = assetCollection.localizedTitle {
                 print(title)
                 if ( title.contains(IPStringCameraRoll) || title.contains(IPStringAllPhotos) || title.contains(IPStringCameraRollEnglish) || title.contains(IPStringAllPhotosEnglish) )  {
-                    fetchzResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
+                    let options = PHFetchOptions()
+                    //排序
+                    options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: !isNewPhotoFront)]
+                    //是否包含连拍照片
+                    options.includeAllBurstAssets = true
+                    //是否包含隐藏照片
+                    options.includeHiddenAssets = true
+                    fetchResult = PHAsset.fetchAssets(in: assetCollection, options: options)
                     break
                 }
             }
         }
-        if fetchzResult == nil {
+        guard let result = fetchResult else {
             return
         }
         
-        for index in 0..<fetchzResult!.count {
-            let cellModel = ImageCellModel(phAsset: fetchzResult![index])
+        cellModelArray.removeAll()
+        for index in 0..<result.count {
+            let cellModel = ImageCellModel(phAsset: result[index])
             
-            switch chooseType {
+            switch MPProperty.chooseType {
             case .headImageType:
                 if cellModel.modelType == .imageAssetModel {
                     cellModelArray.append(cellModel)
@@ -301,119 +298,154 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
             }
             
         }
-        cellModelArray.sort { (model1, model2) -> Bool in
-            if isNewPhotoFront {
-                return model1.phAsset!.creationDate! > model2.phAsset!.creationDate!
-            }else{
-                return model1.phAsset!.creationDate! < model2.phAsset!.creationDate!
+        
+        if isNeedCameraBtn {
+            for i in 0..<cellModelArray.count {
+                cellModelArray[i].index = i+1
+            }
+            var cameraCellModel = ImageCellModel()
+            cameraCellModel.index = 0
+            cellModelArray.insert(cameraCellModel, at: 0)
+        } else {
+            for i in 0..<cellModelArray.count {
+                cellModelArray[i].index = i
             }
         }
-        
-        for i in 0..<cellModelArray.count {
-            cellModelArray[i].index = i+1
-        }
-        
-        var cameraCellModel = ImageCellModel()
-        cameraCellModel.index = 0
-        cellModelArray.insert(cameraCellModel, at: 0)
     }
     
-    func updateSortNumbers() {
+    private func updateSortNumbers() {
         for i in 0..<updateSelectArray.count {
             let selectCell = collectionView.cellForItem(at: IndexPath(row: updateSelectArray[i].index, section: 0))
-            if selectCell != nil {
-                (selectCell as! ImageCollectionCellView).numbleLabel.text = "\(i+1)"
+            if let cell = selectCell as? ImageCollectionCellView {
+                cell.numbleLabel.text = "\(i+1)"
             }
         }
     }
     
-    func updateRightBarBtnEnable() {
-        if updateSelectArray.count > 0 {
-            navigationItem.rightBarButtonItem?.isEnabled = true
-        }else{
-            navigationItem.rightBarButtonItem?.isEnabled = false
+    private func updateUserEnable(_ isEnable: Bool) {
+        collectionView.allowsSelection = isEnable
+        collectionView.isScrollEnabled = isEnable
+        rightBarButtonItem.isEnabled = isEnable
+        for cell in collectionView.visibleCells {
+            guard let imageCell = cell as? ImageCollectionCellView  else { continue
+            }
+            imageCell.selectBtn.isEnabled = isEnable
         }
     }
     
-    func changeCellSelectState(cell: ImageCollectionCellView) {
+    private func changeCellSelectState(cell: ImageCollectionCellView) {
         //改变选择与数字显示状态
         cell.cellModel.isSelected = !cell.cellModel.isSelected
         cell.selectCoverView.isHidden = !cell.cellModel.isSelected
         //改变数据源状态
-        let indexPath: IndexPath! = collectionView.indexPath(for: cell)
-        cellModelArray[indexPath.row].isSelected = cell.cellModel.isSelected
+        if let indexPath = collectionView.indexPath(for: cell) {
+            cellModelArray[indexPath.row].isSelected = cell.cellModel.isSelected
+        }
     }
     
     // MARK: - Click Method
-    func backBarBtnClick() {
-        if isComingVCStatusBarShow {
-            UIApplication.shared.setStatusBarHidden(false, with: .none)
-        }else{
-            UIApplication.shared.setStatusBarHidden(true, with: .none)
-        }
-        
-        if isShowByPresent {
-            self.dismiss(animated: true, completion: nil)
-        }else{
-            if let shouldPopVC = shouldPopVC {
-                hidesBottomBarWhenPushed = isComingVCTabBarShow ? false : true
-                if isComingVCNavigationBarShow {
-                    navigationController?.setNavigationBarHidden(false, animated: true)
-                }else{
-                    navigationController?.setNavigationBarHidden(true, animated: true)
-                }
-                
-                _ = navigationController?.popToViewController(shouldPopVC, animated: true)
-            }
-        }
+    public func backBarBtnClick() {
+        checkAndChangeBars(controller: self, shouldPopVC: shouldPopVC)
     }
     
-    func rightBtnClick() {
-        if updateSelectArray.count == 0 {
+    public func rightBtnClick() {
+        guard let first = updateSelectArray.first else {
             showHud(targetView: view, title: IPStringSelectAtLeastOne, completeClosure: nil)
             return
         }
-        switch chooseType {
+        
+        switch MPProperty.chooseType {
         case .headImageType:
-            let options = PHImageRequestOptions()
-            options.isSynchronous = true
-            options.resizeMode = .fast
-            PHImageManager.default().requestImage(for: updateSelectArray.last!.phAsset!, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: options, resultHandler: { (image: UIImage?, info: [AnyHashable : Any]?) in
-                
+            guard let phAsset = first.phAsset else {
+                return
+            }
+            //PHImageManagerMaximumSize
+            RequestImageHelper.shared.requestImage(showHudView: view, targetSize: PHImageManagerMaximumSize, phAsset: phAsset, progressHandle: { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                weakSelf.updateUserEnable(false)
+            }, resultHandle: { [weak self]  (alert, image) in
+                DispatchQueue.main.async {
+                    if alert.superview != nil {
+                        alert.removeFromSuperview()
+                    }
+                }
+                guard let weakSelf = self else {
+                    return
+                }
+                guard let image = image else {
+                    return
+                }
+                weakSelf.updateUserEnable(true)
                 let editHeadImageVC = EditHeadImageViewController()
                 editHeadImageVC.headImage = image
-                editHeadImageVC.updateSelectArray = self.updateSelectArray
+                editHeadImageVC.updateSelectArray = weakSelf.updateSelectArray
                 editHeadImageVC.isComingFromDetail = false
-                editHeadImageVC.chooseHeadImageClosure = self.chooseHeadImageClosure
-                editHeadImageVC.isShowByPresent = self.isShowByPresent
-                editHeadImageVC.shouldPopVC = self.shouldPopVC
-                editHeadImageVC.isComingVCStatusBarShow = self.isComingVCStatusBarShow
-                editHeadImageVC.isComingVCNavigationBarShow = self.isComingVCNavigationBarShow
-                editHeadImageVC.isComingVCTabBarShow = self.isComingVCTabBarShow
+                editHeadImageVC.shouldPopVC = weakSelf.shouldPopVC
                 
-                self.hidesBottomBarWhenPushed = true
-                self.navigationController?.setNavigationBarHidden(true, animated: true)
-                self.navigationController?.pushViewController(editHeadImageVC, animated: true)
+                weakSelf.hidesBottomBarWhenPushed = true
+                weakSelf.navigationController?.setNavigationBarHidden(true, animated: true)
+                weakSelf.navigationController?.pushViewController(editHeadImageVC, animated: true)
             })
+            
         case .shareImageType:
-            if let closure = chooseImagesClosure {
+            if let closure = MPProperty.chooseShareAssetClosure {
                 var phAssetArray: [PHAsset] = []
                 
                 for index in 0..<updateSelectArray.count {
-                    guard (updateSelectArray[index].phAsset != nil)  else {
+                    guard let phAsset = updateSelectArray[index].phAsset else {
                         continue
                     }
-                    phAssetArray.append(updateSelectArray[index].phAsset!)
+                    phAssetArray.append(phAsset)
                 }
                 backBarBtnClick()
                 closure(phAssetArray)
             }
-        }
-    }
+            if let closure = MPProperty.chooseShareImageClosure {
+                var imageArray: [UIImage] = []
+                
+                for index in 0..<updateSelectArray.count {
+                    guard let phAsset = updateSelectArray[index].phAsset else {
+                        imageArray.append(UIImage())
+                        continue
+                    }
+                    RequestImageHelper.shared.requestImage(showHudView: view, targetSize: MPProperty.resultImageTargetSize, phAsset: phAsset, progressHandle: { [weak self] in
+                        guard let weakSelf = self else {
+                            return
+                        }
+                        weakSelf.updateUserEnable(false)
+                    }, resultHandle: { [weak self] (alert, image) in
+                        guard let weakSelf = self else {
+                            return
+                        }
+                        
+                        if let image = image {
+                            imageArray.append(image)
+                        } else {
+                            imageArray.append(UIImage())
+                        }
+                        
+                        if imageArray.count == weakSelf.updateSelectArray.count {
+                            DispatchQueue.main.async {
+                                if alert.superview != nil {
+                                    alert.removeFromSuperview()
+                                }
+                                weakSelf.updateUserEnable(true)
+                                weakSelf.backBarBtnClick()
+                                closure(imageArray)
+                            }
+                        }
+                    })
+                }//for(){...}      end
+            }//if let closure = MPProperty.chooseShareImageClosure    end
+        }//switch-case  end
+    }//method   end
+    
     
     // MARK: - ImageCollectionCellViewDelegate Delegate Method
     func selectBtnClicked(cell: ImageCollectionCellView) {
-        switch chooseType {
+        switch MPProperty.chooseType {
         case .headImageType:
             //选中的cell改变状态
             changeCellSelectState(cell: cell)
@@ -422,11 +454,9 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
                 //旧cell改版状态
                 if let shouldHideCellIndex = updateSelectArray.first?.index {
                     //若旧cell正在显示，改变显示状态
-                    if let shouldHideCell = collectionView.cellForItem(at: IndexPath(row: shouldHideCellIndex, section: 0)) {
-                        let collectionCell = shouldHideCell as! ImageCollectionCellView
-                        
-                        collectionCell.cellModel.isSelected = !collectionCell.cellModel.isSelected
-                        collectionCell.selectCoverView.isHidden = !collectionCell.cellModel.isSelected
+                    if let shouldHideCell = collectionView.cellForItem(at: IndexPath(row: shouldHideCellIndex, section: 0)) as? ImageCollectionCellView {
+                        shouldHideCell.cellModel.isSelected = !shouldHideCell.cellModel.isSelected
+                        shouldHideCell.selectCoverView.isHidden = !shouldHideCell.cellModel.isSelected
                     }
                     cellModelArray[shouldHideCellIndex].isSelected = false
                 }
@@ -436,11 +466,10 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
             if cell.cellModel.isSelected{
                 updateSelectArray.append(cell.cellModel)
             }
-            updateRightBarBtnEnable()
             
         case .shareImageType:
-            var maxNum = maxChooseNum
-            if chooseType == .headImageType {
+            var maxNum = MPProperty.maxChooseNum
+            if MPProperty.chooseType == .headImageType {
                 maxNum = 1
             }
             
@@ -462,78 +491,65 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
                     }
                 }
             }
-            updateRightBarBtnEnable()
-            
             updateSortNumbers()
         }
     }
     
     // MARK: - imagePickerController Delegate Method
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        switch chooseType {
-        case .headImageType:
-            self.dismiss(animated: true, completion: nil)
-            let image = info[UIImagePickerControllerEditedImage] as! UIImage
-            if let closuer = self.chooseHeadImageClosure {
-                backBarBtnClick()
-                closuer(image)
-            }
-        case .shareImageType:
-            self.dismiss(animated: true, completion: nil)
-            var identifierString: String? = nil
-            PHPhotoLibrary.shared().performChanges({ 
-                let assetChangeRequet = PHAssetChangeRequest.creationRequestForAsset(from: info[UIImagePickerControllerEditedImage] as! UIImage)
-                identifierString = assetChangeRequet.placeholderForCreatedAsset?.localIdentifier
-            }, completionHandler: { (isSuccess, error) in
-                guard (identifierString != nil) else{
+        guard let image = info[UIImagePickerControllerEditedImage] as? UIImage else {
+            showHud(targetView: view, title: "获取照片失败", completeClosure: { [weak self] in
+                guard let weakSelf = self else {
                     return
                 }
-                let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [identifierString!], options: nil)
-                
-                var lastImageAsset: PHAsset? = nil
-                if (fetchResult.firstObject != nil){
-                    lastImageAsset = fetchResult.firstObject
-                }
-                
-                var cellModel = ImageCellModel()
-                cellModel.index = 0
-                cellModel.isSelected = false
-                cellModel.phAsset = lastImageAsset
-                
-                if let closure = self.chooseImagesClosure {
-                    self.backBarBtnClick()
-                    if let lastImageAsset = lastImageAsset {
-                        closure([lastImageAsset])
-                        return
-                    }
-                    if let failClosure = self.failClosure{
-                        failClosure()
-                    }
-                }
+                weakSelf.dismiss(animated: true, completion: nil)
             })
+            return
         }
+        
+        PHPhotoLibrary.shared().performChanges({
+            _ = PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }, completionHandler: { [weak self] (isSuccess, error) in
+            guard let weakSelf = self else {
+                return
+            }
+            switch MPProperty.chooseType {
+            case .headImageType:
+                if let closure = MPProperty.chooseHeadImageClosure {
+                    DispatchQueue.main.async {
+                        weakSelf.backBarBtnClick()
+                        closure(image)
+                    }
+                }
+            case .shareImageType:
+                weakSelf.updateSelectArray.removeAll()
+                weakSelf.initData()
+                DispatchQueue.main.async {
+                    weakSelf.collectionView.reloadData()
+                }
+            }
+            weakSelf.dismiss(animated: true, completion: nil)
+        })
     }
     
     // MARK: - collectionViewDelegate&DataSource Method
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = ImageCollectionCellView.cellView(collectionView: collectionView, indexPath: indexPath, cellModel: cellModelArray[indexPath.row])
         cell.delegate = self
-        if cameraBtnImage != nil {
-            cell.cameraBtnImage = cameraBtnImage!
+        if let image = cameraBtnImage {
+            cell.cameraBtnImage = image
         }
         
-        switch chooseType {
+        switch MPProperty.chooseType {
         case .headImageType:
-            cell.selectImageView.image = selectImage
+            cell.selectImageView.image = MPProperty.selectImage
             cell.selectImageView.isHidden = false
         case .shareImageType:
-            if isUseSelectImageInShareImageType {
-                cell.selectImageView.image = selectImage
+            if MPProperty.isUseSelectImageInShareImageType {
+                cell.selectImageView.image = MPProperty.selectImage
                 cell.selectImageView.isHidden = false
             }else{
                 cell.selectImageView.isHidden = true
-                cell.selectNumTextColor = selectNumTextColor
-                cell.selectBackgroundColor = selectBackgroundColor
             }
             
             if cell.cellModel.isSelected {
@@ -558,31 +574,14 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
             cameraVC.delegate = self
             self.present(cameraVC, animated: true, completion: nil)
         }else{
-            let detailVC = ImageDetailViewController()
-            switch chooseType {
-            case .headImageType:
-                guard cellModel.phAsset != nil else {
-                    return
-                }
-                detailVC.chooseHeadImageClosure = chooseHeadImageClosure
-                detailVC.maxChooseNum = 1
-                detailVC.selectImage = selectImage
-            case .shareImageType:
-                detailVC.chooseImagesClosure = chooseImagesClosure
-                detailVC.maxChooseNum = maxChooseNum
+            guard cellModel.phAsset != nil else {
+                return
             }
-            detailVC.chooseType = chooseType
+            let detailVC = ImageDetailViewController()
             detailVC.comingIndex = cellModel.index
             detailVC.cellModelArray = cellModelArray
             detailVC.updateSelectArray = updateSelectArray
-            detailVC.isShowByPresent = isShowByPresent
-            detailVC.themeColor = themeColor
-            detailVC.selectNumTextColor = selectNumTextColor
-            detailVC.selectBackgroundColor = selectBackgroundColor
             detailVC.shouldPopVC = shouldPopVC
-            detailVC.isComingVCStatusBarShow = self.isComingVCStatusBarShow
-            detailVC.isComingVCNavigationBarShow = self.isComingVCNavigationBarShow
-            detailVC.isComingVCTabBarShow = self.isComingVCTabBarShow
             
             hidesBottomBarWhenPushed = true
             navigationController?.setNavigationBarHidden(true, animated: true)

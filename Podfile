@@ -6,7 +6,7 @@ target 'YSJSwiftLibrary' do
     use_frameworks!
 #pod 'ImagePicker'
 pod 'AlertHud', '~> 1.0.0'
-pod 'MediaPicker', '~> 1.1.4.5'
+pod 'MediaPicker', '~> 1.2.1'
 pod 'KVStore'
 pod 'MBProgressHUD', '~> 1.0.0'
 pod 'AFNetworking', '~> 3.1'

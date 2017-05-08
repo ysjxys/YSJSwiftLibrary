@@ -22,8 +22,13 @@
 		7E27C4D71E1204B300ED02A1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E27C4D91E1204B300ED02A1 /* InfoPlist.strings */; };
 		7E27C4E11E12071200ED02A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E27C4E31E12071200ED02A1 /* Localizable.strings */; };
 		7E6743A01E6D077B00485407 /* HeadImageRollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67439F1E6D077B00485407 /* HeadImageRollView.swift */; };
-		7E7B015D1E1CF37E00D0D66E /* AppErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B015C1E1CF37E00D0D66E /* AppErrors.swift */; };
 		7E923AF91E7B8CA60052AECC /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923AF81E7B8CA60052AECC /* SecondViewController.swift */; };
+		7E9573D61EB1D3C700E2FD24 /* YSJLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573D51EB1D3C700E2FD24 /* YSJLabel.swift */; };
+		7E9573E11EB1EE2C00E2FD24 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E01EB1EE2C00E2FD24 /* Common.swift */; };
+		7E9573E31EB1F60400E2FD24 /* ExtensionColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E21EB1F60400E2FD24 /* ExtensionColor.swift */; };
+		7E9573E51EB1F62900E2FD24 /* ExtensionImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E41EB1F62900E2FD24 /* ExtensionImage.swift */; };
+		7E9573E71EB1F67000E2FD24 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E61EB1F67000E2FD24 /* ExtensionString.swift */; };
+		7E9573E91EB1F69C00E2FD24 /* ExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E81EB1F69C00E2FD24 /* ExtensionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,9 +73,14 @@
 		7E27C4DD1E12065F00ED02A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		7E27C4E21E12071200ED02A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7E67439F1E6D077B00485407 /* HeadImageRollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadImageRollView.swift; sourceTree = "<group>"; };
-		7E7B015C1E1CF37E00D0D66E /* AppErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppErrors.swift; sourceTree = "<group>"; };
 		7E7B015F1E1D14EF00D0D66E /* YSJSwiftLibrary-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YSJSwiftLibrary-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E923AF81E7B8CA60052AECC /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecondViewController.swift; path = ../SecondViewController.swift; sourceTree = "<group>"; };
+		7E9573D51EB1D3C700E2FD24 /* YSJLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSJLabel.swift; sourceTree = "<group>"; };
+		7E9573E01EB1EE2C00E2FD24 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		7E9573E21EB1F60400E2FD24 /* ExtensionColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionColor.swift; sourceTree = "<group>"; };
+		7E9573E41EB1F62900E2FD24 /* ExtensionImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionImage.swift; sourceTree = "<group>"; };
+		7E9573E61EB1F67000E2FD24 /* ExtensionString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
+		7E9573E81EB1F69C00E2FD24 /* ExtensionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionView.swift; sourceTree = "<group>"; };
 		A92DB6017709FAA662A87B3F /* Pods_YSJSwiftLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YSJSwiftLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -135,8 +145,9 @@
 			isa = PBXGroup;
 			children = (
 				7E1C891B1E08C273009A4990 /* AppDelegate.swift */,
-				7E7B015B1E1CF37E00D0D66E /* common */,
+				7E9573DF1EB1EE1F00E2FD24 /* Common */,
 				7E1C89521E08C400009A4990 /* Children */,
+				7E9573DC1EB1EDD400E2FD24 /* Extension */,
 				7E67439E1E6D071C00485407 /* headImageRoll */,
 				7E1C891D1E08C273009A4990 /* ViewController.swift */,
 				7E923AF81E7B8CA60052AECC /* SecondViewController.swift */,
@@ -176,6 +187,7 @@
 				7E1C89531E08C428009A4990 /* YSJNavigationController.swift */,
 				7E1C89541E08C428009A4990 /* YSJTabBarController.swift */,
 				7E1C89551E08C428009A4990 /* YSJViewController.swift */,
+				7E9573D51EB1D3C700E2FD24 /* YSJLabel.swift */,
 			);
 			path = Children;
 			sourceTree = "<group>";
@@ -188,13 +200,23 @@
 			name = headImageRoll;
 			sourceTree = "<group>";
 		};
-		7E7B015B1E1CF37E00D0D66E /* common */ = {
+		7E9573DC1EB1EDD400E2FD24 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				7E7B015C1E1CF37E00D0D66E /* AppErrors.swift */,
+				7E9573E21EB1F60400E2FD24 /* ExtensionColor.swift */,
+				7E9573E41EB1F62900E2FD24 /* ExtensionImage.swift */,
+				7E9573E61EB1F67000E2FD24 /* ExtensionString.swift */,
+				7E9573E81EB1F69C00E2FD24 /* ExtensionView.swift */,
 			);
-			name = common;
-			path = DataSave/common;
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		7E9573DF1EB1EE1F00E2FD24 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				7E9573E01EB1EE2C00E2FD24 /* Common.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		ACF5A2236EFE02DFB5D40CFD /* Frameworks */ = {
@@ -396,14 +418,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E1C891E1E08C273009A4990 /* ViewController.swift in Sources */,
+				7E9573E91EB1F69C00E2FD24 /* ExtensionView.swift in Sources */,
+				7E9573E51EB1F62900E2FD24 /* ExtensionImage.swift in Sources */,
+				7E9573D61EB1D3C700E2FD24 /* YSJLabel.swift in Sources */,
 				7E1C89241E08C273009A4990 /* YSJSwiftLibrary.xcdatamodeld in Sources */,
+				7E9573E11EB1EE2C00E2FD24 /* Common.swift in Sources */,
 				7E6743A01E6D077B00485407 /* HeadImageRollView.swift in Sources */,
 				7E923AF91E7B8CA60052AECC /* SecondViewController.swift in Sources */,
 				7E1C89571E08C428009A4990 /* YSJTabBarController.swift in Sources */,
 				7E1C89581E08C428009A4990 /* YSJViewController.swift in Sources */,
 				7E1C89561E08C428009A4990 /* YSJNavigationController.swift in Sources */,
-				7E7B015D1E1CF37E00D0D66E /* AppErrors.swift in Sources */,
 				7E1C891C1E08C273009A4990 /* AppDelegate.swift in Sources */,
+				7E9573E71EB1F67000E2FD24 /* ExtensionString.swift in Sources */,
+				7E9573E31EB1F60400E2FD24 /* ExtensionColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

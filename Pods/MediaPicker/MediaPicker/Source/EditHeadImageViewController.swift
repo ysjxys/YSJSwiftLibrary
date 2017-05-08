@@ -27,13 +27,7 @@ class EditHeadImageViewController: UIViewController, UIScrollViewDelegate {
     
     var updateSelectArray: [ImageCellModel] = []
     var isComingFromDetail = false
-    //头像选择模式回调
-    var chooseHeadImageClosure: ( (UIImage?) -> () )?
-    var isShowByPresent = true
     var shouldPopVC: UIViewController?
-    var isComingVCTabBarShow = true
-    var isComingVCNavigationBarShow = true
-    var isComingVCStatusBarShow = true
     
     override var prefersStatusBarHidden: Bool{
         return true
@@ -317,17 +311,18 @@ class EditHeadImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func cancelBtnClick() {
-        if isComingFromDetail{
-            navigationController?.setNavigationBarHidden(true, animated: false)
-        }else{
-            navigationController?.setNavigationBarHidden(false, animated: false)
-        }
-        if isShowByPresent {
-            self.dismiss(animated: true, completion: nil)
-        }else{
-            hidesBottomBarWhenPushed = true
-            _ = navigationController?.popViewController(animated: true)
-        }
+//        if isComingFromDetail{
+//            navigationController?.setNavigationBarHidden(true, animated: false)
+//        }else{
+//            navigationController?.setNavigationBarHidden(false, animated: false)
+//        }
+//        if MPProperty.isShowByPresent {
+//            self.dismiss(animated: true, completion: nil)
+//        }else{
+//            hidesBottomBarWhenPushed = true
+//            _ = navigationController?.popViewController(animated: true)
+//        }
+        checkAndChangeBars(controller: self, shouldPopVC: shouldPopVC)
     }
     
     func sureBtnClick() {
@@ -336,28 +331,8 @@ class EditHeadImageViewController: UIViewController, UIScrollViewDelegate {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        if let closure = chooseHeadImageClosure {
-            if isComingVCStatusBarShow {
-                UIApplication.shared.setStatusBarHidden(false, with: .none)
-            }else{
-                UIApplication.shared.setStatusBarHidden(true, with: .none)
-            }
-            if self.isShowByPresent {
-                self.dismiss(animated: true, completion: nil)
-            }else{
-                if let shouldPopVC = shouldPopVC {
-                    hidesBottomBarWhenPushed = isComingVCTabBarShow ? false : true
-                    if isComingVCNavigationBarShow {
-                        navigationController?.setNavigationBarHidden(false, animated: true)
-                    }else{
-                        navigationController?.setNavigationBarHidden(true, animated: true)
-                    }
-                    
-                    _ = navigationController?.popToViewController(shouldPopVC, animated: true)
-                }else {
-                    _ = navigationController?.popToRootViewController(animated: true)
-                }
-            }
+        if let closure = MPProperty.chooseHeadImageClosure {
+            checkAndChangeBars(controller: self, shouldPopVC: shouldPopVC)
             closure(newImage!)
         }
     }

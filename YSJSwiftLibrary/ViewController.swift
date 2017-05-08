@@ -41,6 +41,10 @@ class ViewController: YSJViewController{
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "shareImage", style: .plain, target: self, action: #selector(shareImageBtnClick))
         
         
+        
+        
+        
+        
         imageView.backgroundColor = UIColor.lightGray
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
@@ -90,7 +94,7 @@ class ViewController: YSJViewController{
         view.addSubview(headImages)
         
         
-        tabBarController?.selectedIndex = 1
+//        tabBarController?.selectedIndex = 1
     }
     
     func testTempStore() {
@@ -292,8 +296,9 @@ class ViewController: YSJViewController{
     }
     
     func shareImageBtnClick() {
-        let imagePickerVC = ImagePickerViewController(chooseHeadImageClosure: nil, chooseImagesClosure: { (phassetArray) in
-            for asset in phassetArray! {
+        let imagePickerVC = ImagePickerViewController()
+        imagePickerVC.chooseShareAssetClosure = { (assetArray) in
+            for asset in assetArray {
                 let option = PHImageRequestOptions()
                 option.isSynchronous = true
                 option.resizeMode = .fast
@@ -302,8 +307,6 @@ class ViewController: YSJViewController{
                     self.imageView.image = image
                 })
             }
-        }) { 
-            print("fail")
         }
         //shareImageType  照片选择模式进入
         imagePickerVC.themeColor = UIColor.purple
@@ -311,7 +314,7 @@ class ViewController: YSJViewController{
         imagePickerVC.selectNumTextColor = UIColor.red
         imagePickerVC.cameraBtnImage = UIImage(named: "addition_icon")
         imagePickerVC.selectImage = UIImage(named: "video_icon")
-        //        imagePickerVC.isUseSelectImageInShareImageType = true
+        imagePickerVC.isUseSelectImageInShareImageType = true
         imagePickerVC.detailType = .imageVideoType
         imagePickerVC.chooseType = .shareImageType
         imagePickerVC.isNewPhotoFront = true
@@ -328,11 +331,10 @@ class ViewController: YSJViewController{
     
     func headImageBtnClick() {
         //headImageType   头像选择模式进入
-        let imagePickerVC = ImagePickerViewController(chooseHeadImageClosure: { (headImage) in
-            print("width:\(headImage?.size.width)  height:\(headImage?.size.height)")
+        let imagePickerVC = ImagePickerViewController()
+        imagePickerVC.chooseHeadImageClosure = { (headImage) in
+            print("width:\(headImage.size.width)  height:\(headImage.size.height)")
             self.imageView.image = headImage
-        }, chooseImagesClosure: nil) { 
-            print("fail")
         }
         //default is false
         imagePickerVC.isNewPhotoFront = false

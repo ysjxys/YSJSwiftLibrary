@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Photos
 
 let ImageCollectionCellViewIdentifier = "ImageCollectionCellViewIdentifier"
 let EditImageTextCellViewIdentifier = "EditImageTextCellViewIdentifier"
@@ -67,29 +67,29 @@ let IPStringAllPhotosEnglish = "All Photos"
 
 let IPCompareRatio = UIScreen.main.bounds.width/CGFloat(375)
 
-public func appName() -> String {
+func appName() -> String {
     guard let tempName: String = Bundle.main.infoDictionary!["CFBundleName"] as? String else {
         return ""
     }
     return tempName
 }
 
-public func imageFromBundle(imageName: String) -> (UIImage?){
+func imageFromBundle(imageName: String) -> (UIImage?){
     if let url = Bundle(for: ImagePickerViewController.self).url(forResource: "MediaPicker", withExtension: "bundle") {
         return UIImage(named: imageName, in: Bundle(url: url), compatibleWith: nil)
     }
     return nil
 }
 
-public func ipFitSize(_ originalSize: CGFloat) -> (CGFloat) {
+func ipFitSize(_ originalSize: CGFloat) -> (CGFloat) {
     return CGFloat(Int(originalSize * IPCompareRatio * CGFloat(100))/Int(1))/CGFloat(100)
 }
 
-public func ipColorFromHex (_ hex: String) -> UIColor {
+func ipColorFromHex (_ hex: String) -> UIColor {
     return ipColorFromHex(hex: hex, alpha: CGFloat(1))
 }
 
-public func ipColorFromHex(hex: String, alpha: CGFloat) -> UIColor {
+func ipColorFromHex(hex: String, alpha: CGFloat) -> UIColor {
     var cString:String = hex.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
     if (cString.hasPrefix("#")) {
         cString = (cString as NSString).substring(from: 1)
@@ -104,38 +104,44 @@ public func ipColorFromHex(hex: String, alpha: CGFloat) -> UIColor {
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(alpha))
 }
 
-public func showHud(targetView: UIView, title: String, completeClosure:( () -> () )? ){
+func createAlert(title: String) -> UIView {
+    let label = UILabel()
+    label.text = title
+    label.backgroundColor = UIColor.white
+    label.textColor = UIColor.lightGray
+    label.layer.cornerRadius = 5
+    label.layer.borderColor = UIColor.clear.cgColor
+    label.clipsToBounds = true
+    label.numberOfLines = 0
+    label.textAlignment = .center
+    label.font = UIFont.boldSystemFont(ofSize: 17)
+    
+    let cornerRadiusBackView = UIView()
+    cornerRadiusBackView.backgroundColor = UIColor.clear
+    cornerRadiusBackView.layer.shadowOffset = CGSize(width: 3, height: 3)
+    cornerRadiusBackView.layer.shadowOpacity = 0.7
+    cornerRadiusBackView.layer.shadowRadius = 5
+    cornerRadiusBackView.layer.shadowColor = UIColor.lightGray.cgColor
+    let size = title.boundingRect(with: CGSize(width: 240, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: label.font], context: nil).size
+    cornerRadiusBackView.frame = CGRect(x: 0, y: 0, width: size.width+60, height: size.height+30)
+    
+    label.frame = CGRect(x: 0, y: 0, width: cornerRadiusBackView.frame.width, height: cornerRadiusBackView.frame.height)
+    cornerRadiusBackView.addSubview(label)
+    
+    return cornerRadiusBackView
+}
+
+func showHud(targetView: UIView, title: String, completeClosure:( () -> () )? ){
     DispatchQueue.main.async {
-        let label = UILabel()
-        label.text = title
-        label.backgroundColor = UIColor.white
-        label.textColor = UIColor.lightGray
-        label.layer.cornerRadius = 5
-        label.clipsToBounds = true
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 17)
-        
-        let cornerRadiusBackView = UIView()
-        cornerRadiusBackView.backgroundColor = UIColor.clear
-        cornerRadiusBackView.layer.shadowOffset = CGSize(width: 3, height: 3)
-        cornerRadiusBackView.layer.shadowOpacity = 0.7
-        cornerRadiusBackView.layer.shadowRadius = 5
-        cornerRadiusBackView.layer.shadowColor = UIColor.lightGray.cgColor
-        let size = title.boundingRect(with: CGSize(width: 240, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: label.font], context: nil).size
-        cornerRadiusBackView.frame = CGRect(x: 0, y: 0, width: size.width+60, height: size.height+30)
+        let cornerRadiusBackView = createAlert(title: title)
         cornerRadiusBackView.center = targetView.center
         targetView.addSubview(cornerRadiusBackView)
         
-        
-        label.frame = CGRect(x: 0, y: 0, width: cornerRadiusBackView.frame.width, height: cornerRadiusBackView.frame.height)
-        cornerRadiusBackView.addSubview(label)
-        
         UIView.animate(withDuration: 2, animations: {
-            label.alpha = 0.99
+            cornerRadiusBackView.alpha = 0.99
         }) { (isFinish1) in
             UIView.animate(withDuration: 0.5, animations: {
-                label.alpha = 0
+                cornerRadiusBackView.alpha = 0
             }, completion: { (isFinish2) in
                 cornerRadiusBackView.removeFromSuperview()
                 if completeClosure != nil{
@@ -146,4 +152,27 @@ public func showHud(targetView: UIView, title: String, completeClosure:( () -> (
     }
 }
 
+func checkAndChangeBars(controller: UIViewController, shouldPopVC: UIViewController?) {
+    if MPProperty.isComingVCStatusBarShow {
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+    }else{
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+    }
+    if MPProperty.isShowByPresent {
+        controller.dismiss(animated: true, completion: nil)
+    }else{
+        if let shouldPopVC = shouldPopVC {
+            controller.hidesBottomBarWhenPushed = MPProperty.isComingVCTabBarShow ? false : true
+            if MPProperty.isComingVCNavigationBarShow {
+                controller.navigationController?.setNavigationBarHidden(false, animated: true)
+            }else{
+                controller.navigationController?.setNavigationBarHidden(true, animated: true)
+            }
+            
+            _ = controller.navigationController?.popToViewController(shouldPopVC, animated: true)
+        }else {
+            _ = controller.navigationController?.popToRootViewController(animated: true)
+        }
+    }
+}
 

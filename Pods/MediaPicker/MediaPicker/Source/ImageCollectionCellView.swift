@@ -23,6 +23,8 @@ class ImageCollectionCellView: UICollectionViewCell {
     var numbleLabel: UILabel!
     var timeLabel: UILabel!
     var selectImageView: UIImageView!
+//    var circle: CircleProgressView!
+    
     var cameraBtnImage: UIImage? {
         didSet{
             if cellModel.modelType == .cameraModel {
@@ -30,21 +32,8 @@ class ImageCollectionCellView: UICollectionViewCell {
             }
         }
     }
-    var selectBackgroundColor: UIColor? {
-        didSet{
-            selectCoverView.backgroundColor = selectBackgroundColor
-        }
-    }
-    var selectNumTextColor: UIColor? {
-        didSet{
-            numbleLabel.textColor = selectNumTextColor
-        }
-    }
-    
     
     weak var delegate: ImageCollectionCellViewDelegate?
-    
-    
     
     static func cellView(collectionView: UICollectionView, indexPath: IndexPath, cellModel: ImageCellModel) -> (ImageCollectionCellView){
         let cellView: ImageCollectionCellView = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionCellViewIdentifier, for: indexPath) as! ImageCollectionCellView
@@ -116,6 +105,15 @@ class ImageCollectionCellView: UICollectionViewCell {
         }else{
             timeDurationView?.isHidden = true
         }
+        
+//        if circle == nil {
+//            
+//            circle = CircleProgressView(center: CGPoint(x: frame.size.width/2, y: frame.size.height/2), width: frame.size.width * 0.7)
+//            circle.backgroundColor = UIColor.purple
+//            addSubview(circle)
+//            circle.isHidden = truer
+//        }
+//        circle.progressValue = 0.0
     }
     
     func initSelectBtnBackgroundView() -> UIView {
@@ -128,7 +126,7 @@ class ImageCollectionCellView: UICollectionViewCell {
         
         selectCoverView = UIView(frame: backView.bounds)
         
-        selectCoverView.backgroundColor = ipColorFromHex(IPHexColorNextBtn)
+        selectCoverView.backgroundColor = MPProperty.selectBackgroundColor
         selectCoverView.layer.cornerRadius = ipFitSize(IPCGFloatCollectionSelectRoundDiameter/2)
         selectCoverView.isUserInteractionEnabled = false
         backView.addSubview(selectCoverView)
@@ -136,7 +134,7 @@ class ImageCollectionCellView: UICollectionViewCell {
         
         numbleLabel = UILabel(frame: selectCoverView.bounds)
         numbleLabel.backgroundColor = UIColor.clear
-        numbleLabel.textColor = UIColor.white
+        numbleLabel.textColor = MPProperty.selectNumTextColor
         numbleLabel.font = UIFont.systemFont(ofSize: 15)
         numbleLabel.isUserInteractionEnabled = false
         numbleLabel.textAlignment = .center
