@@ -21,7 +21,15 @@
 		7E1C89581E08C428009A4990 /* YSJViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1C89551E08C428009A4990 /* YSJViewController.swift */; };
 		7E27C4D71E1204B300ED02A1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E27C4D91E1204B300ED02A1 /* InfoPlist.strings */; };
 		7E27C4E11E12071200ED02A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E27C4E31E12071200ED02A1 /* Localizable.strings */; };
-		7E6743A01E6D077B00485407 /* HeadImageRollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67439F1E6D077B00485407 /* HeadImageRollView.swift */; };
+		7E68AD751EFA90A100AE0A4F /* ExtensionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E68AD741EFA90A100AE0A4F /* ExtensionLabel.swift */; };
+		7E68AD791F00E45F00AE0A4F /* ExtensionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E68AD781F00E45F00AE0A4F /* ExtensionTextView.swift */; };
+		7E789E221F0F778F0040CC04 /* YSJGradientLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E789E211F0F778F0040CC04 /* YSJGradientLabel.swift */; };
+		7E7C11401FB0452D00AE34A1 /* YSJHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C113D1FB0452A00AE34A1 /* YSJHttpRequest.swift */; };
+		7E7C11411FB0452D00AE34A1 /* YSJModeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C113E1FB0452B00AE34A1 /* YSJModeling.swift */; };
+		7E7C11421FB0452D00AE34A1 /* YSJHttpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C113F1FB0452D00AE34A1 /* YSJHttpAPI.swift */; };
+		7E7C11451FB0457F00AE34A1 /* HeadImageRollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C11441FB0457F00AE34A1 /* HeadImageRollView.swift */; };
+		7E7C11841FB3009100AE34A1 /* ExtensionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C11831FB3009100AE34A1 /* ExtensionData.swift */; };
+		7E7C11861FB300A300AE34A1 /* ExtensionDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C11851FB300A300AE34A1 /* ExtensionDictionary.swift */; };
 		7E923AF91E7B8CA60052AECC /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E923AF81E7B8CA60052AECC /* SecondViewController.swift */; };
 		7E9573D61EB1D3C700E2FD24 /* YSJLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573D51EB1D3C700E2FD24 /* YSJLabel.swift */; };
 		7E9573E11EB1EE2C00E2FD24 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E01EB1EE2C00E2FD24 /* Common.swift */; };
@@ -29,6 +37,8 @@
 		7E9573E51EB1F62900E2FD24 /* ExtensionImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E41EB1F62900E2FD24 /* ExtensionImage.swift */; };
 		7E9573E71EB1F67000E2FD24 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E61EB1F67000E2FD24 /* ExtensionString.swift */; };
 		7E9573E91EB1F69C00E2FD24 /* ExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9573E81EB1F69C00E2FD24 /* ExtensionView.swift */; };
+		7EB94BEB1EEFC442006604DC /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB94BEA1EEFC442006604DC /* ExtensionViewController.swift */; };
+		7EC0CB6B1F1C8EA0000E02F6 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC0CB6A1F1C8EA0000E02F6 /* Badge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,8 +82,16 @@
 		7E27C4DC1E12065F00ED02A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		7E27C4DD1E12065F00ED02A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		7E27C4E21E12071200ED02A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		7E67439F1E6D077B00485407 /* HeadImageRollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadImageRollView.swift; sourceTree = "<group>"; };
+		7E68AD741EFA90A100AE0A4F /* ExtensionLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionLabel.swift; sourceTree = "<group>"; };
+		7E68AD781F00E45F00AE0A4F /* ExtensionTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionTextView.swift; sourceTree = "<group>"; };
+		7E789E211F0F778F0040CC04 /* YSJGradientLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSJGradientLabel.swift; sourceTree = "<group>"; };
 		7E7B015F1E1D14EF00D0D66E /* YSJSwiftLibrary-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YSJSwiftLibrary-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		7E7C113D1FB0452A00AE34A1 /* YSJHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSJHttpRequest.swift; sourceTree = "<group>"; };
+		7E7C113E1FB0452B00AE34A1 /* YSJModeling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSJModeling.swift; sourceTree = "<group>"; };
+		7E7C113F1FB0452D00AE34A1 /* YSJHttpAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSJHttpAPI.swift; sourceTree = "<group>"; };
+		7E7C11441FB0457F00AE34A1 /* HeadImageRollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadImageRollView.swift; sourceTree = "<group>"; };
+		7E7C11831FB3009100AE34A1 /* ExtensionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionData.swift; sourceTree = "<group>"; };
+		7E7C11851FB300A300AE34A1 /* ExtensionDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDictionary.swift; sourceTree = "<group>"; };
 		7E923AF81E7B8CA60052AECC /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecondViewController.swift; path = ../SecondViewController.swift; sourceTree = "<group>"; };
 		7E9573D51EB1D3C700E2FD24 /* YSJLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSJLabel.swift; sourceTree = "<group>"; };
 		7E9573E01EB1EE2C00E2FD24 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -81,6 +99,8 @@
 		7E9573E41EB1F62900E2FD24 /* ExtensionImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionImage.swift; sourceTree = "<group>"; };
 		7E9573E61EB1F67000E2FD24 /* ExtensionString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
 		7E9573E81EB1F69C00E2FD24 /* ExtensionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionView.swift; sourceTree = "<group>"; };
+		7EB94BEA1EEFC442006604DC /* ExtensionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
+		7EC0CB6A1F1C8EA0000E02F6 /* Badge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		A92DB6017709FAA662A87B3F /* Pods_YSJSwiftLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YSJSwiftLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -145,12 +165,13 @@
 			isa = PBXGroup;
 			children = (
 				7E1C891B1E08C273009A4990 /* AppDelegate.swift */,
+				7E7C113B1FB044FE00AE34A1 /* Part */,
 				7E9573DF1EB1EE1F00E2FD24 /* Common */,
 				7E1C89521E08C400009A4990 /* Children */,
 				7E9573DC1EB1EDD400E2FD24 /* Extension */,
-				7E67439E1E6D071C00485407 /* headImageRoll */,
 				7E1C891D1E08C273009A4990 /* ViewController.swift */,
 				7E923AF81E7B8CA60052AECC /* SecondViewController.swift */,
+				7EC0CB6A1F1C8EA0000E02F6 /* Badge.swift */,
 				7E1C891F1E08C273009A4990 /* Main.storyboard */,
 				7E1C89251E08C273009A4990 /* Assets.xcassets */,
 				7E7B015F1E1D14EF00D0D66E /* YSJSwiftLibrary-Bridging-Header.h */,
@@ -188,16 +209,36 @@
 				7E1C89541E08C428009A4990 /* YSJTabBarController.swift */,
 				7E1C89551E08C428009A4990 /* YSJViewController.swift */,
 				7E9573D51EB1D3C700E2FD24 /* YSJLabel.swift */,
+				7E789E211F0F778F0040CC04 /* YSJGradientLabel.swift */,
 			);
 			path = Children;
 			sourceTree = "<group>";
 		};
-		7E67439E1E6D071C00485407 /* headImageRoll */ = {
+		7E7C113B1FB044FE00AE34A1 /* Part */ = {
 			isa = PBXGroup;
 			children = (
-				7E67439F1E6D077B00485407 /* HeadImageRollView.swift */,
+				7E7C11431FB0457F00AE34A1 /* HeadImageRoll */,
+				7E7C113C1FB0451A00AE34A1 /* HttpRequest */,
 			);
-			name = headImageRoll;
+			path = Part;
+			sourceTree = "<group>";
+		};
+		7E7C113C1FB0451A00AE34A1 /* HttpRequest */ = {
+			isa = PBXGroup;
+			children = (
+				7E7C113F1FB0452D00AE34A1 /* YSJHttpAPI.swift */,
+				7E7C113D1FB0452A00AE34A1 /* YSJHttpRequest.swift */,
+				7E7C113E1FB0452B00AE34A1 /* YSJModeling.swift */,
+			);
+			path = HttpRequest;
+			sourceTree = "<group>";
+		};
+		7E7C11431FB0457F00AE34A1 /* HeadImageRoll */ = {
+			isa = PBXGroup;
+			children = (
+				7E7C11441FB0457F00AE34A1 /* HeadImageRollView.swift */,
+			);
+			path = HeadImageRoll;
 			sourceTree = "<group>";
 		};
 		7E9573DC1EB1EDD400E2FD24 /* Extension */ = {
@@ -207,6 +248,11 @@
 				7E9573E41EB1F62900E2FD24 /* ExtensionImage.swift */,
 				7E9573E61EB1F67000E2FD24 /* ExtensionString.swift */,
 				7E9573E81EB1F69C00E2FD24 /* ExtensionView.swift */,
+				7EB94BEA1EEFC442006604DC /* ExtensionViewController.swift */,
+				7E68AD741EFA90A100AE0A4F /* ExtensionLabel.swift */,
+				7E68AD781F00E45F00AE0A4F /* ExtensionTextView.swift */,
+				7E7C11831FB3009100AE34A1 /* ExtensionData.swift */,
+				7E7C11851FB300A300AE34A1 /* ExtensionDictionary.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -371,13 +417,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-YSJSwiftLibrary-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1E34D2FF0AF9F1F877F153D3 /* [CP] Embed Pods Frameworks */ = {
@@ -386,9 +435,28 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-YSJSwiftLibrary/Pods-YSJSwiftLibrary-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/HandyJSON/HandyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
+				"${BUILT_PRODUCTS_DIR}/MediaPicker/MediaPicker.framework",
+				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HandyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MediaPicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -401,9 +469,24 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-YSJSwiftLibrary/Pods-YSJSwiftLibrary-resources.sh",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/UMSocialSDKResourcesNew.bundle",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenApi_IOS_Bundle.bundle",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_Extra_Frameworks/SinaSSO/WeiboSDK.bundle",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/SocialSDKXib/UMSCommentDetailController.xib",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/SocialSDKXib/UMSCommentInputController.xib",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/SocialSDKXib/UMSCommentInputControlleriPad.xib",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/SocialSDKXib/UMShareEditViewController.xib",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/SocialSDKXib/UMShareEditViewControlleriPad.xib",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/SocialSDKXib/UMSLoginViewController.xib",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/SocialSDKXib/UMSnsAccountViewController.xib",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/SocialSDKXib/UMSShareListController.xib",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/en.lproj",
+				"${PODS_ROOT}/UMengSocialCOM/Umeng_SDK_Social_iOS_ARM64_5.2.1/UMSocial_Sdk_5.2.1/zh-Hans.lproj",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -423,14 +506,24 @@
 				7E9573D61EB1D3C700E2FD24 /* YSJLabel.swift in Sources */,
 				7E1C89241E08C273009A4990 /* YSJSwiftLibrary.xcdatamodeld in Sources */,
 				7E9573E11EB1EE2C00E2FD24 /* Common.swift in Sources */,
-				7E6743A01E6D077B00485407 /* HeadImageRollView.swift in Sources */,
 				7E923AF91E7B8CA60052AECC /* SecondViewController.swift in Sources */,
 				7E1C89571E08C428009A4990 /* YSJTabBarController.swift in Sources */,
+				7E7C11421FB0452D00AE34A1 /* YSJHttpAPI.swift in Sources */,
+				7E7C11451FB0457F00AE34A1 /* HeadImageRollView.swift in Sources */,
+				7E68AD791F00E45F00AE0A4F /* ExtensionTextView.swift in Sources */,
+				7E7C11401FB0452D00AE34A1 /* YSJHttpRequest.swift in Sources */,
+				7E7C11841FB3009100AE34A1 /* ExtensionData.swift in Sources */,
 				7E1C89581E08C428009A4990 /* YSJViewController.swift in Sources */,
+				7E789E221F0F778F0040CC04 /* YSJGradientLabel.swift in Sources */,
 				7E1C89561E08C428009A4990 /* YSJNavigationController.swift in Sources */,
+				7EB94BEB1EEFC442006604DC /* ExtensionViewController.swift in Sources */,
+				7E68AD751EFA90A100AE0A4F /* ExtensionLabel.swift in Sources */,
 				7E1C891C1E08C273009A4990 /* AppDelegate.swift in Sources */,
 				7E9573E71EB1F67000E2FD24 /* ExtensionString.swift in Sources */,
+				7E7C11411FB0452D00AE34A1 /* YSJModeling.swift in Sources */,
 				7E9573E31EB1F60400E2FD24 /* ExtensionColor.swift in Sources */,
+				7EC0CB6B1F1C8EA0000E02F6 /* Badge.swift in Sources */,
+				7E7C11861FB300A300AE34A1 /* ExtensionDictionary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -604,6 +697,7 @@
 			baseConfigurationReference = 79FB6A1C1AE71707696D3276 /* Pods-YSJSwiftLibrary.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2EUZ5J663F;
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "";
@@ -612,8 +706,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ysj.YSJSwiftLibrary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/YSJSwiftLibrary-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -622,6 +718,7 @@
 			baseConfigurationReference = 6C785ED6C65317984F6027B5 /* Pods-YSJSwiftLibrary.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2EUZ5J663F;
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "";
@@ -630,8 +727,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ysj.YSJSwiftLibrary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/YSJSwiftLibrary-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

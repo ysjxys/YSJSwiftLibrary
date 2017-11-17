@@ -29,4 +29,19 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return image ?? UIImage()
     }
+    
+    static func addLogoImage(oriImage: UIImage, logoImage: UIImage, resultImageSize: CGSize, logoImageRect: CGRect) -> UIImage {
+        
+        //开启图片上下文
+        UIGraphicsBeginImageContext(resultImageSize)
+        //图形重绘
+        oriImage.draw(in: CGRect(x: 0, y: 0, width: resultImageSize.width, height: resultImageSize.height))
+        //添加水印
+        logoImage.draw(in: logoImageRect)
+        
+        let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return resultImage ?? UIImage()
+    }
 }

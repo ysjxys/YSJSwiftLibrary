@@ -305,12 +305,12 @@ class EditHeadImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - btn click Method
-    func doubleTapClick() {
+    @objc func doubleTapClick() {
         let zoom = scroll.zoomScale > scroll.minimumZoomScale ? scroll.minimumZoomScale : scroll.maximumZoomScale
         scroll.setZoomScale(zoom, animated: true)
     }
     
-    func cancelBtnClick() {
+    @objc func cancelBtnClick() {
 //        if isComingFromDetail{
 //            navigationController?.setNavigationBarHidden(true, animated: false)
 //        }else{
@@ -325,7 +325,7 @@ class EditHeadImageViewController: UIViewController, UIScrollViewDelegate {
         checkAndChangeBars(controller: self, shouldPopVC: shouldPopVC)
     }
     
-    func sureBtnClick() {
+    @objc func sureBtnClick() {
         UIGraphicsBeginImageContextWithOptions(clipView.frame.size, false, 0.0)
         clipView.layer.render(in: UIGraphicsGetCurrentContext()!)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()

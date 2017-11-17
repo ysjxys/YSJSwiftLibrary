@@ -9,17 +9,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>AlertHud.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>CryptoSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FDFullscreenPopGesture.xcscheme</key>
+		<key>Alamofire.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -29,12 +19,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>FSCalendar.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>KVStore.xcscheme</key>
+		<key>HandyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -64,109 +49,13 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>SAMKeychain.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SDWebImage.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>SnapKit.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>ViewDeck.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>086CF64B877ADDA4BC23676357F5424D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>0F71FC248875B67F53494C44B17B40EB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>11850102CB3391ACD30D7567061E8D62</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>251BAD17812F7EBF6532EACF66F941C3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>40EC55FC21982A26C9FB56C7FA2B3318</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>41FA54D12162DAD51D02FC58A2CD5034</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5522F1A87C6A0996967D2A5ED58E1E3B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5B3A1C848DB5937FCE1BFEB747C4182C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>69EE3579BBE031C3365B09E5CC3902A4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6BB1C1403B2419F911818DA8413FDA07</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>75AE4949D7D03A29F6588B218F9F0318</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B49C0B41643678B99802265849048768</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C200DD529E39033F12BE2A26854F99A4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C5A2DB7A84B7B78E359870D2E1B24AA7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>CF671F7E57B92905F1CC91D036D6B4A7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E14A62900910444707A5504D25EC98DC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

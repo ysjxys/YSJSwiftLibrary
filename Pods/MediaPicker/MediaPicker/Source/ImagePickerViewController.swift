@@ -76,6 +76,8 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     public var leftBarBtnAttributeClosure: ((UIBarButtonItem) -> ())?
     //navigationBar右侧导航按钮属性配置
     public var rightBarBtnAttributeClosure: ((UIBarButtonItem) -> ())?
+    //navigationItem属性配置
+    public var navigationAttributeClosure: ((UINavigationItem) -> ())?
     //是否需要拍照按钮
     public var isNeedCameraBtn = true
     //拍照按钮图片
@@ -148,7 +150,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
         NotificationCenter.default.addObserver(self, selector: #selector(updateArrayCollectionVC(notification:)), name: updateArrayCollectionVCNotificationName, object: nil)
     }
     
-    func updateArrayCollectionVC(notification: Notification) {
+    @objc func updateArrayCollectionVC(notification: Notification) {
         var updateArray: [ImageCellModel] = notification.userInfo?[updateArrayCollectionVCUserInfoKey] as! Array
         for i in 0..<updateArray.count {
             if updateArray[i].modelType == .cameraModel {
@@ -185,38 +187,35 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     private func initView() {
         view.backgroundColor = UIColor.white
         
-        var rightItemTitle = ""
-        
         switch MPProperty.chooseType {
         case .shareImageType:
             navigationItem.title = IPStringCamera
-            rightItemTitle = IPStringComplete
+            rightBarButtonItem.title = IPStringComplete
         case .headImageType:
             navigationItem.title = IPStringCameraRoll
-            rightItemTitle = IPStringNextStep
+            rightBarButtonItem.title = IPStringNextStep
+        }
+        
+        if let closure = navigationAttributeClosure {
+            closure(navigationItem)
         }
         
         let leftBarButtonItem = UIBarButtonItem()
+        leftBarButtonItem.title = IPStringBack
         if let closure = leftBarBtnAttributeClosure {
             closure(leftBarButtonItem)
-        } else {
-            leftBarButtonItem.title = IPStringBack
-            leftBarButtonItem.style = .plain
         }
         leftBarButtonItem.target = self
         leftBarButtonItem.action = #selector(backBarBtnClick)
         
-        if let closure = leftBarBtnAttributeClosure {
+        if let closure = rightBarBtnAttributeClosure {
             closure(rightBarButtonItem)
-        } else {
-            rightBarButtonItem.title = rightItemTitle
-            rightBarButtonItem.style = .plain
         }
         rightBarButtonItem.target = self
         rightBarButtonItem.action = #selector(rightBtnClick)
         rightBarButtonItem.isEnabled = false
-        rightBarButtonItem.setTitleTextAttributes([NSForegroundColorAttributeName: MPProperty.themeColor], for: .normal)
-        rightBarButtonItem.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.lightGray], for: .disabled)
+        rightBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: MPProperty.themeColor], for: .normal)
+        rightBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.lightGray], for: .disabled)
         
         navigationItem.leftBarButtonItem = leftBarButtonItem
         navigationItem.rightBarButtonItem = rightBarButtonItem
@@ -226,7 +225,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
         //导航栏背景色
         navigationController?.navigationBar.barTintColor = UIColor.white
         //导航栏文字颜色
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ipColorFromHex(IPHexColorNavigationTitle)]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: ipColorFromHex(IPHexColorNavigationTitle)]
         
         collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height), collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = UIColor.white
@@ -344,11 +343,11 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     }
     
     // MARK: - Click Method
-    public func backBarBtnClick() {
+    @objc public func backBarBtnClick() {
         checkAndChangeBars(controller: self, shouldPopVC: shouldPopVC)
     }
     
-    public func rightBtnClick() {
+    @objc public func rightBtnClick() {
         guard let first = updateSelectArray.first else {
             showHud(targetView: view, title: IPStringSelectAtLeastOne, completeClosure: nil)
             return
@@ -378,15 +377,27 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
                     return
                 }
                 weakSelf.updateUserEnable(true)
-                let editHeadImageVC = EditHeadImageViewController()
-                editHeadImageVC.headImage = image
-                editHeadImageVC.updateSelectArray = weakSelf.updateSelectArray
-                editHeadImageVC.isComingFromDetail = false
-                editHeadImageVC.shouldPopVC = weakSelf.shouldPopVC
                 
-                weakSelf.hidesBottomBarWhenPushed = true
-                weakSelf.navigationController?.setNavigationBarHidden(true, animated: true)
-                weakSelf.navigationController?.pushViewController(editHeadImageVC, animated: true)
+                if MPProperty.isNeedEdit {
+                    let editHeadImageVC = EditHeadImageViewController()
+                    editHeadImageVC.headImage = image
+                    editHeadImageVC.updateSelectArray = weakSelf.updateSelectArray
+                    editHeadImageVC.isComingFromDetail = false
+                    editHeadImageVC.shouldPopVC = weakSelf.shouldPopVC
+                    
+                    weakSelf.hidesBottomBarWhenPushed = true
+                    weakSelf.navigationController?.setNavigationBarHidden(true, animated: true)
+                    weakSelf.navigationController?.pushViewController(editHeadImageVC, animated: true)
+                } else {
+                    if let headClosure = MPProperty.chooseHeadImageClosure {
+                        DispatchQueue.main.async {
+                            weakSelf.updateUserEnable(true)
+                            weakSelf.backBarBtnClick()
+                            headClosure(image)
+                        }
+                    }
+                }
+                
             })
             
         case .shareImageType:
@@ -497,7 +508,9 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
     
     // MARK: - imagePickerController Delegate Method
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        guard let image = info[UIImagePickerControllerEditedImage] as? UIImage else {
+        let key = MPProperty.isNeedEdit ? UIImagePickerControllerEditedImage : UIImagePickerControllerOriginalImage
+        
+        guard let image = info[key] as? UIImage else {
             showHud(targetView: view, title: "获取照片失败", completeClosure: { [weak self] in
                 guard let weakSelf = self else {
                     return
@@ -513,22 +526,44 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
             guard let weakSelf = self else {
                 return
             }
-            switch MPProperty.chooseType {
-            case .headImageType:
-                if let closure = MPProperty.chooseHeadImageClosure {
+//            switch MPProperty.chooseType {
+//            case .headImageType:
+//                if let closure = MPProperty.chooseHeadImageClosure {
+//                    DispatchQueue.main.async {
+//                        weakSelf.backBarBtnClick()
+//                        closure(image)
+//                    }
+//                }
+//            case .shareImageType:
+//                weakSelf.updateSelectArray.removeAll()
+//                weakSelf.initData()
+//                DispatchQueue.main.async {
+//                    weakSelf.collectionView.reloadData()
+//                }
+//            }
+            
+            weakSelf.dismiss(animated: true, completion: { 
+                if MPProperty.isUseTakePhotoDirect {
+                    if let closure = MPProperty.chooseHeadImageClosure {
+                        DispatchQueue.main.async {
+                            weakSelf.backBarBtnClick()
+                            closure(image)
+                        }
+                    }
+                    if let closure = MPProperty.chooseShareImageClosure {
+                        DispatchQueue.main.async {
+                            weakSelf.backBarBtnClick()
+                            closure([image])
+                        }
+                    }
+                } else {
+                    weakSelf.updateSelectArray.removeAll()
+                    weakSelf.initData()
                     DispatchQueue.main.async {
-                        weakSelf.backBarBtnClick()
-                        closure(image)
+                        weakSelf.collectionView.reloadData()
                     }
                 }
-            case .shareImageType:
-                weakSelf.updateSelectArray.removeAll()
-                weakSelf.initData()
-                DispatchQueue.main.async {
-                    weakSelf.collectionView.reloadData()
-                }
-            }
-            weakSelf.dismiss(animated: true, completion: nil)
+            })
         })
     }
     
@@ -570,7 +605,7 @@ public class ImagePickerViewController: UIViewController, UIImagePickerControlle
         if cellModel.modelType == ModelType.cameraModel {
             let cameraVC = UIImagePickerController()
             cameraVC.sourceType = .camera
-            cameraVC.allowsEditing = true
+            cameraVC.allowsEditing = MPProperty.isNeedEdit
             cameraVC.delegate = self
             self.present(cameraVC, animated: true, completion: nil)
         }else{

@@ -43,4 +43,8 @@ public class MPProperty: NSObject {
     public static var isComingVCNavigationBarShow = true
     //进入MediaPlayer的页面的statusBar是否显示
     public static var isComingVCStatusBarShow = true
+    //是否在选择照片后还需要进行裁剪
+    public static var isNeedEdit = true
+    //是否拍照后直接进行编辑或使用回调，而不再回到列表页
+    public static var isUseTakePhotoDirect = true
 }

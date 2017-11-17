@@ -12,12 +12,12 @@ import UIKit
 extension String {
     
     func size(font: UIFont, maxSize: CGSize, lineSpace: CGFloat? = nil) -> CGSize {
-        var attributeDic: [String: NSObject] = [NSFontAttributeName: font]
+        var attributeDic: [NSAttributedStringKey: NSObject] = [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue): font]
         
         if let lineSpace = lineSpace {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = lineSpace
-            attributeDic[NSParagraphStyleAttributeName] = paragraphStyle
+            attributeDic[NSAttributedStringKey.paragraphStyle] = paragraphStyle
         }
         
         return self.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: attributeDic, context: nil).size

@@ -8,16 +8,13 @@
 
 import UIKit
 import Photos
-import KVStore
-//import ImagePicker
 import MediaPicker
-import FDFullscreenPopGesture
 import SnapKit
 
 class ViewController: YSJViewController{
     
     var imageView = UIImageView()
-    
+    let shadowImageView = UIImageView(frame: CGRect(x: 120, y: 552, width: 59, height: 59))
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -33,7 +30,8 @@ class ViewController: YSJViewController{
         view.backgroundColor = UIColor.white
         
         navigationItem.title = "我也是第一页"
-        
+        let str = "京C-R3925"
+        print(str.characters.count)
         navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "返回", style: UIBarButtonItemStyle.plain, target: self, action: #selector(childBackBtnClick))
         
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "headImage", style: UIBarButtonItemStyle.plain, target: self, action: #selector(headImageBtnClick))
@@ -55,21 +53,17 @@ class ViewController: YSJViewController{
             make.height.equalTo(view.snp.width).multipliedBy(0.5)
         }
         
-        
-        navigationController?.fd_viewControllerBasedNavigationBarAppearanceEnabled = true
-        
-        
 //        testPersistentStore()
 //        testLargePersistentStore()
 //        testCacheStore()
 //        testLargeCacheStore()
-//        testLargeCacheWithTimeStore()
+//        testLargeCacheWithTimeKVStore()
 //        testTempStore()
 //        testPlistStore()
 //        testSecurityStore()
 //        testUserDefult()
         
-        let headImages = HeadImageRollView(frame: CGRect(x: 100, y: 400, width: 100, height: 150))
+        let headImages = HeadImageRollView(frame: CGRect(x: 120, y: 400, width: 100, height: 150))
         
         headImages.headImagesArray = [
             UIImage(named: "camera_button_icon")!,
@@ -92,35 +86,92 @@ class ViewController: YSJViewController{
 //        headImages.isHorizontalShow = false
         headImages.backgroundColor = UIColor.groupTableViewBackground
         view.addSubview(headImages)
+
         
+        
+        view.addSubview(shadowImageView)
+        
+        shadowImageView.backgroundColor = UIColor.purple
+        shadowImageView.image = #imageLiteral(resourceName: "camera_button_icon")
+        shadowImageView.layer.cornerRadius = shadowImageView.frame.width / 2
+        shadowImageView.layer.shadowColor = UIColor.gray.cgColor
+        shadowImageView.layer.shadowOffset = CGSize(width: 5, height: 5)
+        shadowImageView.backgroundColor = UIColor.purple
+        shadowImageView.layer.shadowOpacity = 0.5
+        
+        
+        
+        let label = UILabel(frame: CGRect(x: 250, y: 400, width: 100, height: 200))
+        label.backgroundColor = UIColor.lightGray
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.textColor = UIColor.purple
+        label.font = UIFont.systemFont(ofSize: 20)
+        view.addSubview(label)
+//        label.setLineSpaceing(lineSpace: CGFloat(10), text: "哈哈哈哈哈哈哈\n哈哈哈哈哈哈哈哈", alignment: .center)
+        label.text = "哈哈哈哈哈哈哈\n哈哈哈哈哈哈哈哈"
+        label.setLineSpaceing(lineSpace: CGFloat(10))
+        
+        let textView = UITextView(frame: CGRect(x: 10, y: 400, width: 100, height: 200))
+        textView.backgroundColor = UIColor.lightGray
+        textView.textColor = UIColor.purple
+        textView.text = "哈哈哈哈哈哈哈\n哈哈哈哈哈哈哈哈"
+        textView.setLineSpaceing(lineSpace: CGFloat(20), text: nil, alignment: .center, attributes: nil)
+        view.addSubview(textView)
         
 //        tabBarController?.selectedIndex = 1
+        
+        let btn = UIButton(type: .infoLight)
+        btn.frame = CGRect(x: 50, y: 100, width: 50, height: 50)
+        btn.addTarget(self, action: #selector(btnClick), for: .touchUpInside)
+        view.addSubview(btn)
     }
     
-    func testTempStore() {
+    @objc func btnClick() {
+        UIView.animateKeyframes(withDuration: 6, delay: 0, options: [.calculationModeLinear], animations: {
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.333, animations: {
+                self.imageView.layer.frame = CGRect(x: 50, y: 100, width: 100, height: 50)
+                self.imageView.layer.backgroundColor = UIColor.red.cgColor
+            })
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.333, relativeDuration: 0.333, animations: {
+                self.imageView.layer.backgroundColor = UIColor.yellow.cgColor
+            })
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.666, relativeDuration: 0.333, animations: {
+                //                self.label.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/8))
+                self.imageView.layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi/8), 0, 0, 1)
+                self.imageView.layer.backgroundColor = UIColor.lightGray.cgColor
+            })
+            
+        }, completion: nil)
+    }
+    
+//    func testTempStore() {
 //        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
 //        Store.tempStore().setObject(dataTypeArr, forKey: "key1")
-        print(Store.tempStore().objectForKey("key1"))
-    }
-    
-    func testLargeCacheStore() {
-        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
-        Store.largeCacheStore().setObject(dataTypeArr, forKey: "key1")
-        print(Store.largeCacheStore().objectForKey("key1"))
-    }
-    
-    func testCacheStore() {
-        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
-        Store.cacheStore().setObject(dataTypeArr, forKey: "key1")
-        print(Store.cacheStore().objectForKey("key1"))
-    }
-    
-    func testSecurityStore() {
-        //set arr
-        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
-        Store.securityStore().setObject(dataTypeArr, forKey: "key1")
-        print(Store.securityStore().objectForKey("key1"))
-        
+//        print(Store.tempStore().objectForKey("key1"))
+//    }
+//
+//    func testLargeCacheStore() {
+//        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
+//        Store.largeCacheStore().setObject(dataTypeArr, forKey: "key1")
+//        print(Store.largeCacheStore().objectForKey("key1"))
+//    }
+//
+//    func testCacheStore() {
+//        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
+//        Store.cacheStore().setObject(dataTypeArr, forKey: "key1")
+//        print(Store.cacheStore().objectForKey("key1"))
+//    }
+//
+//    func testSecurityStore() {
+//        //set arr
+//        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
+//        Store.securityStore().setObject(dataTypeArr, forKey: "key1")
+//        print(Store.securityStore().objectForKey("key1"))
+//
 //        // set dic   enum
 //        let dataTypeDic = DataType.dictionary(["key1":"value1","key2":["1","2"]])
 //        Store.securityStore().setObject(dataTypeDic, forKey: "key2")
@@ -135,14 +186,14 @@ class ViewController: YSJViewController{
 //        //clean
 //        Store.securityStore().cleanAll()
 //        print(Store.securityStore().objectForKey("key2"))
-    }
-    
-    func testLargeCacheWithTimeKVStore() {
-        //set arr
-        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
-        Store.largeCacheWithTimeStore().setObject(dataTypeArr, forKey: "key1")
-        print(Store.largeCacheWithTimeStore().objectForKey("key1"))
-        
+//    }
+//
+//    func testLargeCacheWithTimeKVStore() {
+//        //set arr
+//        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
+//        Store.largeCacheWithTimeStore().setObject(dataTypeArr, forKey: "key1")
+//        print(Store.largeCacheWithTimeStore().objectForKey("key1"))
+//
 //        // set dic   enum
 //        let dataTypeDic = DataType.dictionary(["key1":"value1","key2":["1","2"]])
 //        Store.largeCacheWithTimeStore().setObject(dataTypeDic, forKey: "key2")
@@ -158,15 +209,15 @@ class ViewController: YSJViewController{
 //        
 //        //clean all
 //        Store.largeCacheWithTimeStore().cleanAll()
-        
-    }
-    
-    func testLargePersistentKVStore() {
-        //set arr
-        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
-        Store.largePersistentStore().setObject(dataTypeArr, forKey: "key1")
-        print(Store.largePersistentStore().objectForKey("key1"))
-        
+//
+//    }
+//
+//    func testLargePersistentKVStore() {
+//        //set arr
+//        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
+//        Store.largePersistentStore().setObject(dataTypeArr, forKey: "key1")
+//        print(Store.largePersistentStore().objectForKey("key1"))
+//
 //        // set dic   enum
 //        let dataTypeDic = DataType.dictionary(["key1":"value1","key2":["1","2"]])
 //        Store.largePersistentStore().setObject(dataTypeDic, forKey: "key2")
@@ -181,50 +232,50 @@ class ViewController: YSJViewController{
 //        
 //        //clean all
 //        Store.largePersistentStore().cleanAll()
-    }
-    
-    func testPersistentStore() {
-        //persistent set arr
-        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
-        Store.persistentStore().setObject(dataTypeArr, forKey: "key1")
-        print(Store.persistentStore().objectForKey("key1"))
-        
-        
-        //persistent set dic
-        let dataTypeDic = DataType.dictionary(["key1":"value1","key2":["1","2"]])
-        Store.persistentStore().setObject(dataTypeDic, forKey: "key2")
-        Store.persistentStore().enumerateKeysAndObjectsUsingBlock { (key, dataType) in
-            print(" key:\(key)  \n typeString:\(dataType.typeString()) \n toString:\(dataType.toString())")
-        }
-        
-        
-        //persistent set   int & double & float & bool
-        Store.persistentStore().setValue(1.2, forKey: "key3")
-        let value3: Double? = Store.persistentStore().valueForKey("key3")
-        print("value3:\(value3)")
-        
-        
-        //persistent remove
-        Store.persistentStore().removeForKey("key3")
-        print("delete:\(Store.persistentStore().objectForKey("key3"))")
-        
-        
-        //persistent cleanAll
-        Store.persistentStore().cleanAll()
-        Store.persistentStore().enumerateKeysAndObjectsUsingBlock { (key, dataType) in
-            print(" key:\(key)  \n typeString:\(dataType.typeString()) \n toString:\(dataType.toString())")
-        }
-        print("over")
-    }
-    
-    func testPlistStore() {
-        //plist set dic
-        let typeDic = DataType.dictionary(["key1": "value1", "key2": "value2"])
-        print(typeDic.toString())
-        Store.plistStore().setObject(typeDic, forKey: "plistKey1")
-        print("\(Store.plistStore().objectForKey("plistKey1").toString())")
-        
-        
+//    }
+//
+//    func testPersistentStore() {
+//        //persistent set arr
+//        let dataTypeArr = DataType.array(["value1", "value2", "value3"])
+//        Store.persistentStore().setObject(dataTypeArr, forKey: "key1")
+//        print(Store.persistentStore().objectForKey("key1"))
+//
+//
+//        //persistent set dic
+//        let dataTypeDic = DataType.dictionary(["key1":"value1","key2":["1","2"]])
+//        Store.persistentStore().setObject(dataTypeDic, forKey: "key2")
+//        Store.persistentStore().enumerateKeysAndObjectsUsingBlock { (key, dataType) in
+//            print(" key:\(key)  \n typeString:\(dataType.typeString()) \n toString:\(dataType.toString())")
+//        }
+//
+//
+//        //persistent set   int & double & float & bool
+//        Store.persistentStore().setValue(1.2, forKey: "key3")
+//        let value3: Double? = Store.persistentStore().valueForKey("key3")
+//        print("value3:\(value3)")
+//
+//
+//        //persistent remove
+//        Store.persistentStore().removeForKey("key3")
+//        print("delete:\(Store.persistentStore().objectForKey("key3"))")
+//
+//
+//        //persistent cleanAll
+//        Store.persistentStore().cleanAll()
+//        Store.persistentStore().enumerateKeysAndObjectsUsingBlock { (key, dataType) in
+//            print(" key:\(key)  \n typeString:\(dataType.typeString()) \n toString:\(dataType.toString())")
+//        }
+//        print("over")
+//    }
+//
+//    func testPlistStore() {
+//        //plist set dic
+//        let typeDic = DataType.dictionary(["key1": "value1", "key2": "value2"])
+//        print(typeDic.toString())
+//        Store.plistStore().setObject(typeDic, forKey: "plistKey1")
+//        print("\(Store.plistStore().objectForKey("plistKey1").toString())")
+//
+//
 //        //plist set arr
 //        let typeArr = DataType.array(["11","22"])
 //        Store.plistStore().setObject(typeArr, forKey: "arrarKey2")
@@ -255,14 +306,14 @@ class ViewController: YSJViewController{
 //        
 //        //plist  cleanAll
 //        Store.plistStore().cleanAll()
-    }
-    
-    func testUserDefult() {
-        let userDefault = UserDefaultKVStore()
-        
-        //userDefault  setObject
-        userDefault.setObject(.string("this is str"), forKey: "testErrorKey")
-        print("testErrorValue:\(userDefault.objectForKey("testErrorKey"))")
+//    }
+//
+//    func testUserDefult() {
+//        let userDefault = UserDefaultKVStore()
+//
+//        //userDefault  setObject
+//        userDefault.setObject(.string("this is str"), forKey: "testErrorKey")
+//        print("testErrorValue:\(userDefault.objectForKey("testErrorKey"))")
 //        userDefault.setObject(.string("this is str2"), forKey: "testErrorKey2")
 //        print("testErrorValue:\(userDefault.objectForKey("testErrorKey2"))")
 //        
@@ -283,7 +334,7 @@ class ViewController: YSJViewController{
 //            print(" key:\(key)  \n typeString:\(dataType.typeString()) \n toString:\(dataType.toString())")
 //        }
 //        print("over")
-    }
+//    }
     
     
     override func didReceiveMemoryWarning() {
@@ -291,66 +342,63 @@ class ViewController: YSJViewController{
         // Dispose of any resources that can be recreated.
     }
     
-    func childBackBtnClick() {
-        _ = navigationController?.popViewController(animated: true)
+    @objc func childBackBtnClick() {
+        navigationController?.popViewController(animated: true)
     }
     
-    func shareImageBtnClick() {
+    @objc func shareImageBtnClick() {
         let imagePickerVC = ImagePickerViewController()
-        imagePickerVC.chooseShareAssetClosure = { (assetArray) in
-            for asset in assetArray {
-                let option = PHImageRequestOptions()
-                option.isSynchronous = true
-                option.resizeMode = .fast
-                PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 500, height: 500), contentMode: .default, options: option, resultHandler: { (image, info) in
-                    print("image:\(image)")
-                    self.imageView.image = image
-                })
-            }
-        }
-        //shareImageType  照片选择模式进入
-        imagePickerVC.themeColor = UIColor.purple
-        imagePickerVC.selectBackgroundColor = UIColor.green
-        imagePickerVC.selectNumTextColor = UIColor.red
-        imagePickerVC.cameraBtnImage = UIImage(named: "addition_icon")
-        imagePickerVC.selectImage = UIImage(named: "video_icon")
-        imagePickerVC.isUseSelectImageInShareImageType = true
         imagePickerVC.detailType = .imageVideoType
-        imagePickerVC.chooseType = .shareImageType
-        imagePickerVC.isNewPhotoFront = true
+        //        imagePickerVC.isNewPhotoFront = true
+        //        imagePickerVC.cameraBtnImage = UIImage(named: "addition_icon")
+        //        imagePickerVC.isNeedCameraBtn = false
         
-        //        imagePickerVC.isShowByPresent = true
-        //        let nav = UINavigationController(rootViewController: imagePickerVC)
-        //        self.present(nav, animated: true, completion: nil)
+        MPProperty.isUseSelectImageInShareImageType = true
+        //        MPProperty.themeColor = UIColor.purple
+        MPProperty.selectBackgroundColor = UIColor.green
+        MPProperty.selectNumTextColor = UIColor.red
+        MPProperty.chooseType = .shareImageType
+        //        MPProperty.maxChooseNum = 5
+        MPProperty.selectImage = UIImage(named: "video_icon")
+        MPProperty.chooseShareImageClosure = { (imageArray) in
+            self.imageView.image = imageArray.first
+            print(imageArray)
+        }
+        //        MPProperty.resultImageTargetSize = UIScreen.main.bounds.size
+        //        MPProperty.failClosure = {
+        //            print("fail")
+        //        }
         
-        imagePickerVC.isShowByPresent = false
-        hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(imagePickerVC, animated: true)
-        hidesBottomBarWhenPushed = false
+        let nav = UINavigationController(rootViewController: imagePickerVC)
+        present(nav, animated: true, completion: nil)
     }
     
-    func headImageBtnClick() {
+    @objc func headImageBtnClick() {
         //headImageType   头像选择模式进入
         let imagePickerVC = ImagePickerViewController()
-        imagePickerVC.chooseHeadImageClosure = { (headImage) in
-            print("width:\(headImage.size.width)  height:\(headImage.size.height)")
+        //        imagePickerVC.isNewPhotoFront = true
+        //        imagePickerVC.cameraBtnImage = UIImage(named: "addition_icon")
+        //        imagePickerVC.isNeedCameraBtn = true
+        
+        //        MPProperty.themeColor = ipColorFromHex(IPHexColorNextBtn)
+        //        MPProperty.selectBackgroundColor = ipColorFromHex(IPHexColorNextBtn)
+        //        MPProperty.selectNumTextColor = ipColorFromHex(IPHexColorSelectNumLabelText)
+        MPProperty.chooseType = .headImageType
+        //        MPProperty.maxChooseNum = 2
+        MPProperty.selectImage = UIImage(named: "video_icon")
+        MPProperty.selectBackgroundColor = UIColor.green
+        MPProperty.selectNumTextColor = UIColor.red
+        MPProperty.chooseHeadImageClosure = { (headImage) in
             self.imageView.image = headImage
+            print(headImage)
         }
-        //default is false
-        imagePickerVC.isNewPhotoFront = false
-        //default is .shareImageType
-        imagePickerVC.chooseType = .headImageType
-        imagePickerVC.selectImage = UIImage(named: "video_icon")
+        MPProperty.resultImageTargetSize = UIScreen.main.bounds.size
+        //        MPProperty.failClosure = {
+        //            print("fail")
+        //        }
         
-        
-        imagePickerVC.isShowByPresent = true
         let nav = UINavigationController(rootViewController: imagePickerVC)
         self.present(nav, animated: true, completion: nil)
-        
-//        imagePickerVC.isShowByPresent = false
-//        hidesBottomBarWhenPushed = true
-//        navigationController?.pushViewController(imagePickerVC, animated: true)
-//        hidesBottomBarWhenPushed = false
     }
 }
 

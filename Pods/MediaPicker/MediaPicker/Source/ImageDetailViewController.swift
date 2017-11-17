@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Photos
 
-
 public let updateArrayDetailVCNotificationName = Notification.Name("updateArrayDetailVCNotificationName")
 public let updateArrayDetailVCUserInfoKey = "updateArrayDetailVCUserInfoKey"
 
@@ -195,12 +194,12 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         NotificationCenter.default.addObserver(self, selector: #selector(changeScreenDirectionNotification(notification:)), name: changeScreenDirectionNotificationName, object: nil)
     }
     //用于下一个VC返回时刷新屏幕状态使用，现在由于控件没有需要返回的VC，该方法暂无用武之地
-    func changeScreenDirectionNotification(notification: Notification) {
+    @objc func changeScreenDirectionNotification(notification: Notification) {
         let size = notification.userInfo?[changeScreenDirectionUserInfoKey] as! CGSize
         directionChanged(size: size)
     }
     //用于下一个VC返回时更新数组使用，现在由于控件没有需要返回的VC，该方法暂无用武之地
-    func updateArrayDetailVC(notification: Notification) {
+    @objc func updateArrayDetailVC(notification: Notification) {
         let updateArray: [ImageCellModel] = notification.userInfo?[updateArrayDetailVCUserInfoKey] as! Array
         //将老的更新数组内元素的选中全部设置为未选中
         for cellModel in updateSelectArray {
@@ -228,7 +227,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         NotificationCenter.default.addObserver(self, selector: #selector(avPlayItemDidEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: avPlayerItem)
     }
     
-    func avPlayItemDidEnd() {
+    @objc func avPlayItemDidEnd() {
         videoView.isHidden = true
         topView.isHidden = false
         bottomView.isHidden = false
@@ -714,7 +713,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
     }
     
     // MARK: - Tap&Click Method
-    func playBtnClick(playBtn: UIButton) {
+    @objc func playBtnClick(playBtn: UIButton) {
         guard playBtn.superview != nil else {
             return
         }
@@ -757,7 +756,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         }
     }
     
-    func singleTapClick() {
+    @objc func singleTapClick() {
         if topView.isHidden == false {
             topView.isHidden = true
             bottomView.isHidden = true
@@ -767,7 +766,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         }
     }
     
-    func doubleTapClick() {
+    @objc func doubleTapClick() {
         let cellModel = detailArray[currentIndex]
         if cellModel.modelType == .imageAssetModel {
             
@@ -805,13 +804,13 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         }
     }
     
-    func backBtnClick() {
+    @objc func backBtnClick() {
         NotificationCenter.default.post(name: updateArrayCollectionVCNotificationName, object: self, userInfo: [updateArrayCollectionVCUserInfoKey: updateSelectArray])
         _ = navigationController?.popViewController(animated: true)
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    func selectBtnClick(btn: UIButton) {
+    @objc func selectBtnClick(btn: UIButton) {
         
         switch MPProperty.chooseType {
         case .headImageType:
@@ -852,7 +851,7 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
         updateSelectNumLabelStatus()
     }
     
-    func sureBtnClick() {
+    @objc func sureBtnClick() {
         //参考微信， 若点下下一步时无选中图像，则自动选择当前图片并进入下一步
         var noChoosed = true
         for cellModel in updateSelectArray {
@@ -883,15 +882,24 @@ class ImageDetailViewController: UIViewController, UIScrollViewDelegate{
                 guard let image = image else {
                     return
                 }
+                if MPProperty.isNeedEdit {
+                    let editHeadImageVC = EditHeadImageViewController()
+                    editHeadImageVC.headImage = image
+                    editHeadImageVC.isComingFromDetail = true
+                    editHeadImageVC.updateSelectArray = weakSelf.updateSelectArray
+                    editHeadImageVC.shouldPopVC = weakSelf.shouldPopVC
+                    weakSelf.hidesBottomBarWhenPushed = true
+                    weakSelf.navigationController?.setNavigationBarHidden(true, animated: false)
+                    weakSelf.navigationController?.pushViewController(editHeadImageVC, animated: true)
+                } else {
+                    if let headClosure = MPProperty.chooseHeadImageClosure {
+                        DispatchQueue.main.async {
+                            checkAndChangeBars(controller: weakSelf, shouldPopVC: weakSelf.shouldPopVC)
+                            headClosure(image)
+                        }
+                    }
+                }
                 
-                let editHeadImageVC = EditHeadImageViewController()
-                editHeadImageVC.headImage = image
-                editHeadImageVC.isComingFromDetail = true
-                editHeadImageVC.updateSelectArray = weakSelf.updateSelectArray
-                editHeadImageVC.shouldPopVC = weakSelf.shouldPopVC
-                weakSelf.hidesBottomBarWhenPushed = true
-                weakSelf.navigationController?.setNavigationBarHidden(true, animated: false)
-                weakSelf.navigationController?.pushViewController(editHeadImageVC, animated: true)
             })
 
         case .shareImageType:

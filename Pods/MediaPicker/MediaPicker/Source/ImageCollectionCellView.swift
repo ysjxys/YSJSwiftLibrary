@@ -168,7 +168,7 @@ class ImageCollectionCellView: UICollectionViewCell {
         }
     }
     
-    func selectBtnClick() {
+    @objc func selectBtnClick() {
         delegate?.selectBtnClicked(cell: self)
     }
     

@@ -107,23 +107,23 @@ func ipColorFromHex(hex: String, alpha: CGFloat) -> UIColor {
 func createAlert(title: String) -> UIView {
     let label = UILabel()
     label.text = title
-    label.backgroundColor = UIColor.white
-    label.textColor = UIColor.lightGray
-    label.layer.cornerRadius = 5
+    label.backgroundColor = ipColorFromHex("3E3E3E")
+    label.textColor = UIColor.white
+    label.layer.cornerRadius = 4
     label.layer.borderColor = UIColor.clear.cgColor
     label.clipsToBounds = true
     label.numberOfLines = 0
     label.textAlignment = .center
-    label.font = UIFont.boldSystemFont(ofSize: 17)
+    label.font = UIFont.boldSystemFont(ofSize: 14)
     
     let cornerRadiusBackView = UIView()
     cornerRadiusBackView.backgroundColor = UIColor.clear
-    cornerRadiusBackView.layer.shadowOffset = CGSize(width: 3, height: 3)
-    cornerRadiusBackView.layer.shadowOpacity = 0.7
-    cornerRadiusBackView.layer.shadowRadius = 5
-    cornerRadiusBackView.layer.shadowColor = UIColor.lightGray.cgColor
-    let size = title.boundingRect(with: CGSize(width: 240, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: label.font], context: nil).size
-    cornerRadiusBackView.frame = CGRect(x: 0, y: 0, width: size.width+60, height: size.height+30)
+//    cornerRadiusBackView.layer.shadowOffset = CGSize(width: 3, height: 3)
+//    cornerRadiusBackView.layer.shadowOpacity = 0.7
+//    cornerRadiusBackView.layer.shadowRadius = 5
+//    cornerRadiusBackView.layer.shadowColor = UIColor.lightGray.cgColor
+    let size = title.boundingRect(with: CGSize(width: 240, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: label.font], context: nil).size
+    cornerRadiusBackView.frame = CGRect(x: 0, y: 0, width: size.width+50, height: size.height+25)
     
     label.frame = CGRect(x: 0, y: 0, width: cornerRadiusBackView.frame.width, height: cornerRadiusBackView.frame.height)
     cornerRadiusBackView.addSubview(label)

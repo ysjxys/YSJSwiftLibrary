@@ -14,66 +14,39 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - AlertHud (1.0.0):
-    - SnapKit
-  - CryptoSwift (0.6.7)
-  - FDFullscreenPopGesture (1.1)
-  - FMDB (2.6.2):
-    - FMDB/standard (= 2.6.2)
-  - FMDB/standard (2.6.2)
-  - FSCalendar (2.7.2)
-  - KVStore (1.0.0):
-    - CryptoSwift
-    - FMDB
-    - SAMKeychain
+  - Alamofire (4.5.1)
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - HandyJSON (4.0.0-beta.1)
   - MBProgressHUD (1.0.0)
-  - MediaPicker (1.2.1)
-  - MJRefresh (3.1.12)
+  - MediaPicker (1.3.0)
+  - MJRefresh (3.1.15)
   - Reachability (3.1.1)
-  - SAMKeychain (1.5.2)
-  - SDWebImage (3.8.2):
-    - SDWebImage/Core (= 3.8.2)
-  - SDWebImage/Core (3.8.2)
-  - SnapKit (3.2.0)
-  - UMengSocialCOM (5.2.1)
-  - ViewDeck (2.4.2)
+  - SnapKit (4.0.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1)
-  - AlertHud (~> 1.0.0)
-  - CryptoSwift (~> 0.6.7)
-  - FDFullscreenPopGesture (~> 1.1)
-  - FMDB (~> 2.6)
-  - FSCalendar (~> 2.6)
-  - KVStore
+  - Alamofire (~> 4.5.1)
+  - FMDB (~> 2.7.2)
+  - HandyJSON (= 4.0.0-beta.1)
   - MBProgressHUD (~> 1.0.0)
-  - MediaPicker (~> 1.2.1)
-  - MJRefresh (~> 3.1)
+  - MediaPicker (~> 1.3.0)
+  - MJRefresh (~> 3.1.15)
   - Reachability (~> 3.1.1)
-  - SAMKeychain (~> 1.5)
-  - SDWebImage (~> 3.8)
-  - SnapKit (~> 3.2.0)
-  - UMengSocialCOM (~> 5.2.1)
-  - ViewDeck (~> 2.4)
+  - SnapKit (~> 4.0.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  AlertHud: 25ef4d0c4e2018c391a07f241c9de539ec341098
-  CryptoSwift: 685ae257941e5447474348a2b545583e1a16b573
-  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
-  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  FSCalendar: 6200ef796dfe85005ff2fb19bbd429f8be742f86
-  KVStore: 0e547fb5da38100e6f7c080fcebcc87b9940085a
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  HandyJSON: 428bb18e2c34c2a77361accebf90cf64e4f74118
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  MediaPicker: 5eadc23e966082ab9481425eca5b327a99231952
-  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  MediaPicker: 88c7e52e5d1c44a59fdc536fa2830e482fe0f9c1
+  MJRefresh: 9af70f5f9327a2cf87f0fb5929f35fcc2fa638ea
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
-  SAMKeychain: 1865333198217411f35327e8da61b43de79b635b
-  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
-  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
-  UMengSocialCOM: 074c135ce349aa4c8848d3fb8458757bcb6ffb67
-  ViewDeck: 0b7b83bc2782a20dfb76207d0a2e8c5e6a6d182d
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: 365410f2ba1ba7397268c3b688d67cb706769b5a
+PODFILE CHECKSUM: d4bbd9f53bc471c91a3a62c1480bc79677222bf0
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.3.1

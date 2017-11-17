@@ -11,6 +11,7 @@ import XCTest
 
 class YSJSwiftLibraryTests: XCTestCase {
     
+    //每个test方法执行前调用，在这个测试用例里进行一些通用的初始化工作
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.

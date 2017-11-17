@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //导航栏背景色
         nav.navigationBar.barTintColor = UIColor.white
         //导航栏文字颜色
-        nav.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+        nav.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
         
         
         let nav2 = UINavigationController(rootViewController: SecondViewController())
