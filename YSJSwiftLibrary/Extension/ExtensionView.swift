@@ -114,4 +114,46 @@ extension UIView {
     func setSize(_ size: CGSize) {
         self.frame.size = size
     }
+    
+    public func addTopLine(borderWidth: CGFloat = CGFloat(1), color: UIColor = ColorFromHex("e7e7e7")) {
+        let lineView = generateLineView(color: color, for: self)
+        lineView.snp.makeConstraints { (make) in
+            make.left.equalTo(self)
+            make.right.equalTo(self)
+            make.top.equalTo(self)
+            make.height.equalTo(borderWidth)
+        }
+    }
+    
+    public func addBottomLine(borderWidth: CGFloat = CGFloat(1), color: UIColor = ColorFromHex("e7e7e7"), leftDistance: CGFloat = CGFloat(0)) {
+        let lineView = generateLineView(color: color, for: self)
+        lineView.snp.makeConstraints { (make) in
+            make.left.equalTo(self).offset(leftDistance)
+            make.right.equalTo(self)
+            make.bottom.equalTo(self)
+            make.height.equalTo(borderWidth)
+        }
+    }
+    
+    public func addLeftLine(borderWidth: CGFloat = CGFloat(1), color: UIColor = ColorFromHex("e7e7e7")) {
+        let lineView = generateLineView(color: color, for: self)
+        lineView.snp.makeConstraints { (make) in
+            make.left.equalTo(self)
+            make.width.equalTo(borderWidth)
+            make.bottom.equalTo(self)
+            make.top.equalTo(self)
+        }
+    }
+    
+    public func parentViewController() -> UIViewController? {
+        //nextResponder.isKindOfClass(UIViewController.self)
+        var next: UIView? = self
+        repeat {
+            if let nextResponder = next?.next, nextResponder is UIViewController {
+                return (nextResponder as! UIViewController)
+            }
+            next = next?.superview
+        } while next != nil
+        return nil
+    }
 }

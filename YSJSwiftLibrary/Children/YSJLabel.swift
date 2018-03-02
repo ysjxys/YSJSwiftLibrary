@@ -28,7 +28,6 @@ class YSJLabel: UILabel {
         super.drawText(in: realRect)
     }
     
-    
     override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         var textRect = super.textRect(forBounds: bounds, limitedToNumberOfLines: numberOfLines)
         

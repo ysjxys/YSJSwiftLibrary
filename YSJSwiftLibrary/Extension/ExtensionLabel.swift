@@ -26,4 +26,26 @@ extension UILabel {
             self.attributedText = NSMutableAttributedString(string: self.text!, attributes: attributes)
         }
     }
+    
+    func getFitWidth() -> CGFloat {
+        let label: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: frame.size.height))
+        label.numberOfLines = numberOfLines
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.text = text
+        label.sizeToFit()
+        
+        return label.frame.width
+    }
+    
+    func getFitHeight() -> CGFloat {
+        let label: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: frame.size.width, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = numberOfLines
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.text = text
+        label.sizeToFit()
+        
+        return label.frame.height
+    }
 }

@@ -23,6 +23,8 @@
 		7E27C4E11E12071200ED02A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E27C4E31E12071200ED02A1 /* Localizable.strings */; };
 		7E68AD751EFA90A100AE0A4F /* ExtensionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E68AD741EFA90A100AE0A4F /* ExtensionLabel.swift */; };
 		7E68AD791F00E45F00AE0A4F /* ExtensionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E68AD781F00E45F00AE0A4F /* ExtensionTextView.swift */; };
+		7E76A8761FBE8E4900E732AB /* ExtensionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E76A8751FBE8E4900E732AB /* ExtensionButton.swift */; };
+		7E76A8781FBE8F7700E732AB /* ExtensionDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E76A8771FBE8F7700E732AB /* ExtensionDevice.swift */; };
 		7E789E221F0F778F0040CC04 /* YSJGradientLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E789E211F0F778F0040CC04 /* YSJGradientLabel.swift */; };
 		7E7C11401FB0452D00AE34A1 /* YSJHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C113D1FB0452A00AE34A1 /* YSJHttpRequest.swift */; };
 		7E7C11411FB0452D00AE34A1 /* YSJModeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7C113E1FB0452B00AE34A1 /* YSJModeling.swift */; };
@@ -84,6 +86,8 @@
 		7E27C4E21E12071200ED02A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7E68AD741EFA90A100AE0A4F /* ExtensionLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionLabel.swift; sourceTree = "<group>"; };
 		7E68AD781F00E45F00AE0A4F /* ExtensionTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionTextView.swift; sourceTree = "<group>"; };
+		7E76A8751FBE8E4900E732AB /* ExtensionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionButton.swift; sourceTree = "<group>"; };
+		7E76A8771FBE8F7700E732AB /* ExtensionDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDevice.swift; sourceTree = "<group>"; };
 		7E789E211F0F778F0040CC04 /* YSJGradientLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSJGradientLabel.swift; sourceTree = "<group>"; };
 		7E7B015F1E1D14EF00D0D66E /* YSJSwiftLibrary-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YSJSwiftLibrary-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E7C113D1FB0452A00AE34A1 /* YSJHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YSJHttpRequest.swift; sourceTree = "<group>"; };
@@ -253,6 +257,8 @@
 				7E68AD781F00E45F00AE0A4F /* ExtensionTextView.swift */,
 				7E7C11831FB3009100AE34A1 /* ExtensionData.swift */,
 				7E7C11851FB300A300AE34A1 /* ExtensionDictionary.swift */,
+				7E76A8751FBE8E4900E732AB /* ExtensionButton.swift */,
+				7E76A8771FBE8F7700E732AB /* ExtensionDevice.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -521,9 +527,11 @@
 				7E1C891C1E08C273009A4990 /* AppDelegate.swift in Sources */,
 				7E9573E71EB1F67000E2FD24 /* ExtensionString.swift in Sources */,
 				7E7C11411FB0452D00AE34A1 /* YSJModeling.swift in Sources */,
+				7E76A8781FBE8F7700E732AB /* ExtensionDevice.swift in Sources */,
 				7E9573E31EB1F60400E2FD24 /* ExtensionColor.swift in Sources */,
 				7EC0CB6B1F1C8EA0000E02F6 /* Badge.swift in Sources */,
 				7E7C11861FB300A300AE34A1 /* ExtensionDictionary.swift in Sources */,
+				7E76A8761FBE8E4900E732AB /* ExtensionButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
